@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean name="uiExtjsMainController" scope="singleton" lazy-init="true"
+		class="ro.seava.j4e.web.controller.ui.extjs.UiExtjsMainController">
+		<property name="viewName" value="ui/extjs/indexMain" />
+	</bean>
+
+	<bean name="uiExtjsFrameController" scope="singleton" lazy-init="true"
+		class="ro.seava.j4e.web.controller.ui.extjs.UiExtjsFrameController">
+		<property name="viewName" value="ui/extjs/indexFrame" />
+	</bean>
+</beans>

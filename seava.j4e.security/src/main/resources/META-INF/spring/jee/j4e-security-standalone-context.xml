@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
+ 
+	<!-- Include this file when a bare framework runtime is deployed. Otherwise 
+		these services should be provided by a bundle which knows how to authenticate 
+		application users: from the application's database tables, LDAP, etc -->
+
+	<bean name="securityAuthenticationClientUserService" scope="singleton"
+		lazy-init="true"
+		class="ro.seava.j4e.security.DefaultAuthenticationClientUserService" />
+  
+	<bean name="authorizationFactory" scope="singleton" lazy-init="true"
+		class="ro.seava.j4e.security.DummyAuthorizationFactory" />
+
+	<bean class="ro.seava.j4e.security.DummyAuthorizationForAsgn"
+		scope="singleton" lazy-init="true" />
+
+	<bean class="ro.seava.j4e.security.DummyAuthorizationForDs" scope="singleton"
+		lazy-init="true" />
+
+	<bean class="ro.seava.j4e.security.DummyAuthorizationForJob"
+		scope="singleton" lazy-init="true" />
+
+</beans>

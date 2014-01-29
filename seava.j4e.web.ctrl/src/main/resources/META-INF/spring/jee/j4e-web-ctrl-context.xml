@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration
+		http://www.springframework.org/schema/integration/spring-integration.xsd">
+
+ 
+	<bean id="application_uiExtjsSettings" scope="singleton"
+		lazy-init="true" class="ro.seava.j4e.web.settings.UiExtjsSettings">
+		<property name="urlLib" value="${url.ui.extjs.lib}" />
+		<property name="urlCore" value="${url.ui.extjs.core}" />
+		<property name="urlCoreI18n" value="${url.ui.extjs.core.i18n}" />
+		<property name="urlModules" value="${url.ui.extjs.modules}" />
+		<property name="urlModulesI18n" value="${url.ui.extjs.modules.i18n}" />
+		<property name="urlThemes" value="${url.ui.extjs.themes}" />
+		<property name="moduleSupath" value="${url.ui.extjs.module.subpath}" />
+		<property name="cacheFolder" value="${cache.ui.extjs}" />
+	</bean>
+
+	<bean id="freemarkerConfig"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="classpath:ro/seava/j4e/web/ftl/" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="cache" value="false" />
+		<property name="prefix" value="" />
+		<property name="suffix" value=".ftl" />
+	</bean>
+
+	<bean id="serviceLocator" class="ro.seava.j4e.presenter.service.ServiceLocatorJee" />
+
+	<bean id="dsExportWriterCsv" class="ro.seava.j4e.presenter.action.impex.DsCsvExport" scope="prototype"/>
+	<bean id="dsExportWriterXml" class="ro.seava.j4e.presenter.action.impex.DsXmlExport" scope="prototype"/>
+	<bean id="dsExportWriterJson" class="ro.seava.j4e.presenter.action.impex.DsJsonExport" scope="prototype"/>
+	<bean id="dsExportWriterHtml" class="ro.seava.j4e.presenter.action.impex.DsHtmlExport" scope="prototype"/>
+ 
+ 	<bean id="dsCsvImport" scope="singleton" lazy-init="true" 
+		class="ro.seava.j4e.presenter.service.ds.DsImportUploadedCsv" />
+
+	<bean class="ro.seava.j4e.presenter.descriptor.DsDefinitions"/>
+	<bean class="ro.seava.j4e.presenter.descriptor.JobDefinitions"/>
+
+	<int:channel id="msgImportDataFile" />
+	<int:service-activator input-channel="msgImportDataFile"
+		output-channel="msgImportDataFile" method="execute">
+		<bean class="ro.seava.j4e.presenter.service.ds.ImportDataFileService" />
+	</int:service-activator>
+
+	<!--        <osgi:reference id="osgiImportDataPackageService" cardinality="0..1" interface="ro.seava.j4e.api.service.business.IImportDataPackageService" 
+		/> -->
+</beans>
