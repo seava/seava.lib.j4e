@@ -72,8 +72,8 @@
 			<artifactId>javax.persistence</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.nan21.osgi</groupId>
-			<artifactId>net.nan21.osgi.opencsv</artifactId>
+			<groupId>net.sf.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>
