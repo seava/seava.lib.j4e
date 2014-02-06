@@ -143,7 +143,7 @@ public class SessionController extends AbstractBaseController {
 			return null;
 		} catch (Exception e) {
 			ModelAndView err = this.showLogin(request, response);
-			String msg = "Authentication failed. ";
+			String msg = "Access denied. ";
 			if (e.getMessage() != null && !"".equals(e.getMessage())) {
 				msg += e.getMessage();
 			}
