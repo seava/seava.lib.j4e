@@ -10,11 +10,7 @@ import javax.persistence.Table;
 
 import ro.seava.j4e.domain.impl.AbstractTypeWithCodeNT;
 
-import org.eclipse.persistence.nosql.annotations.DataFormatType;
-import org.eclipse.persistence.nosql.annotations.NoSql;
-
 @Entity
-@NoSql(dataFormat = DataFormatType.MAPPED)
 @Table(name = AbstractTypeWithCodeNTDummy.TABLE_NAME)
 public class AbstractTypeWithCodeNTDummy extends AbstractTypeWithCodeNT {
 

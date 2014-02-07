@@ -43,9 +43,9 @@
 	</#if>
     <#if sysCfg_workingMode == "prod">
 		<script type="text/javascript"
-			src="${hostUrl}${statics["ro.seava.j4e.api.Constants"].URL_DNET_WEB}/ui-extjs/frame/${bundle}/${shortLanguage}/${itemSimpleName}.js"></script>
+			src="${ctxpath}/ui-extjs/frame/${bundle}/${shortLanguage}/${itemSimpleName}.js"></script>
 		<script type="text/javascript"
-			src="${hostUrl}${statics["ro.seava.j4e.api.Constants"].URL_DNET_WEB}/ui-extjs/frame/${bundle}/${itemSimpleName}.js"></script>
+			src="${ctxpath}/ui-extjs/frame/${bundle}/${itemSimpleName}.js"></script>
 	</#if>
 
 	${extensions}
