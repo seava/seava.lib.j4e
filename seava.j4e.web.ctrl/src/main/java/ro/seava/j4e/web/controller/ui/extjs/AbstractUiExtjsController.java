@@ -440,6 +440,10 @@ public abstract class AbstractUiExtjsController extends AbstractBaseController {
 				Map<String, IExtensionProvider> beans = this
 						.getApplicationContext().getBeansOfType(
 								IExtensionProvider.class);
+				if (beans.isEmpty()) {
+					beans = this.getApplicationContext().getParent()
+							.getBeansOfType(IExtensionProvider.class);
+				}
 				for (IExtensionProvider b : beans.values()) {
 					this.extensionProviders.add(b);
 				}

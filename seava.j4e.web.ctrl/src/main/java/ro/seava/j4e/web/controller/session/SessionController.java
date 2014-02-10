@@ -87,6 +87,8 @@ public class SessionController extends AbstractBaseController {
 				.getProductDescription());
 		model.put("productVersion", this.getSettings().getProductVersion());
 		model.put("productUrl", this.getSettings().getProductUrl());
+		model.put("productVendor", this.getSettings().getProductVendor());
+		
 		model.put("ctxpath", this.getSettings().get(Constants.PROP_CTXPATH));
 		
 		return new ModelAndView(this.loginViewName, model);
