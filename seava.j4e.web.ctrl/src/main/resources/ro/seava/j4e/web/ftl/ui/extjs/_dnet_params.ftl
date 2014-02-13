@@ -5,6 +5,7 @@
 		Main.productInfo.name = "${productName}";
 		Main.productInfo.description = "${productDescription}";
 		Main.productInfo.version = "${productVersion}";
+		Main.productInfo.vendor = "${productVendor}";
 		Main.productInfo.url = "${productUrl}";
 		Main.logo = "${logo}";
 
@@ -24,9 +25,9 @@
 		Main.urlStaticCore = "${urlUiExtjsCore}";
 		Main.urlStaticCoreI18n = "${urlUiExtjsCoreI18n}";
 		Main.urlStaticModules = "${urlUiExtjsModules}";
-		Main.urlStaticModulesI18n = "${urlUiExtjsModulesI18n}";
-		Main.urlStaticModulesSubpath = "${urlUiExtjsModuleSubpath}";
-	
+		Main.urlStaticModuleSubpath = "${urlUiExtjsModuleSubpath}";
+		Main.urlStaticModuleUseBundle = ${urlUiExtjsModuleUseBundle?string};
+
 		/* date format masks */
 	
 	    <#list dateFormatMasks?keys as key>

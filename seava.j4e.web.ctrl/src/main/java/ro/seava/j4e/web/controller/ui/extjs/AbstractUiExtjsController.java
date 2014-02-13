@@ -135,6 +135,7 @@ public abstract class AbstractUiExtjsController extends AbstractBaseController {
 		model.put("productDescription", this.getSettings()
 				.getProductDescription());
 		model.put("productVersion", this.getSettings().getProductVersion());
+		model.put("productVendor", this.getSettings().getProductVendor());
 		model.put("productUrl", this.getSettings().getProductUrl());
 		model.put("hostUrl", hostUrl);
 		model.put("ctxpath", this.getSettings().get(Constants.PROP_CTXPATH));
@@ -145,14 +146,13 @@ public abstract class AbstractUiExtjsController extends AbstractBaseController {
 		// DNet extjs components in core and modules
 		model.put("urlUiExtjsLib", getUiExtjsSettings().getUrlLib());
 		model.put("urlUiExtjsCore", getUiExtjsSettings().getUrlCore());
+		model.put("urlUiExtjsCoreI18n", getUiExtjsSettings().getUrlCoreI18n());
+
 		model.put("urlUiExtjsModules", getUiExtjsSettings().getUrlModules());
 		model.put("urlUiExtjsModuleSubpath", getUiExtjsSettings()
-				.getModuleSupath());
-
-		// translations for core and modules
-		model.put("urlUiExtjsCoreI18n", getUiExtjsSettings().getUrlCoreI18n());
-		model.put("urlUiExtjsModulesI18n", getUiExtjsSettings()
-				.getUrlModulesI18n());
+				.getModuleSubpath());
+		model.put("urlUiExtjsModuleUseBundle", getUiExtjsSettings()
+				.isModuleUseBundle());
 
 		model.put("shortLanguage", this.resolveLang(request, response));
 		model.put("theme", this.resolveTheme(request, response));

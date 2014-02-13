@@ -43,9 +43,9 @@
 	</#if>
     <#if sysCfg_workingMode == "prod">
 		<script type="text/javascript"
-			src="${ctxpath}/ui-extjs/frame/${bundle}/${shortLanguage}/${itemSimpleName}.js"></script>
+			src="${ctxpath}/ui-extjs/frame/${bundle}/${shortLanguage}/${item}.js"></script>
 		<script type="text/javascript"
-			src="${ctxpath}/ui-extjs/frame/${bundle}/${itemSimpleName}.js"></script>
+			src="${ctxpath}/ui-extjs/frame/${bundle}/${item}.js"></script>
 	</#if>
 
 	${extensions}

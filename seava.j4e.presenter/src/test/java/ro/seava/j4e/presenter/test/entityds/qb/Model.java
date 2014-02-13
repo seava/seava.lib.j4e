@@ -3,12 +3,12 @@ package ro.seava.j4e.presenter.test.entityds.qb;
 import ro.seava.j4e.api.annotation.Ds;
 import ro.seava.j4e.api.annotation.DsField;
 import ro.seava.j4e.api.annotation.SortField;
-import ro.seava.j4e.presenter.model.AbstractTypeWithCodeDs;
+import ro.seava.j4e.presenter.impl.model.AbstractTypeWithCode_Ds;
 
 @Ds(entity = Object.class, jpqlWhere = " e.name not null ", sort = {
 		@SortField(field = Model.f_code),
 		@SortField(field = Model.f_name, desc = true) })
-public class Model extends AbstractTypeWithCodeDs<Object> {
+public class Model extends AbstractTypeWithCode_Ds<Object> {
 
 	@DsField()
 	private Integer sequenceNo;

@@ -37,14 +37,14 @@ public class UiExtjsSettings {
 	private String urlModules;
 
 	/**
-	 * Root URL of the modules translations
-	 */
-	private String urlModulesI18n;
-
-	/**
 	 * Token for the module components within the bundle.
 	 */
-	private String moduleSupath;
+	private String moduleSubpath;
+
+	/**
+	 * Include component bundle in url?
+	 */
+	private boolean moduleUseBundle;
 
 	/**
 	 * Root URL of the themes for Extjs
@@ -92,20 +92,12 @@ public class UiExtjsSettings {
 		this.urlModules = urlModules;
 	}
 
-	public String getUrlModulesI18n() {
-		return urlModulesI18n;
+	public String getModuleSubpath() {
+		return moduleSubpath;
 	}
 
-	public void setUrlModulesI18n(String urlModulesI18n) {
-		this.urlModulesI18n = urlModulesI18n;
-	}
-
-	public String getModuleSupath() {
-		return moduleSupath;
-	}
-
-	public void setModuleSupath(String moduleSupath) {
-		this.moduleSupath = moduleSupath;
+	public void setModuleSubpath(String moduleSubpath) {
+		this.moduleSubpath = moduleSubpath;
 	}
 
 	public String getUrlThemes() {
@@ -128,6 +120,14 @@ public class UiExtjsSettings {
 			this.cacheFolder = cacheFolder;
 		}
 
+	}
+
+	public boolean isModuleUseBundle() {
+		return moduleUseBundle;
+	}
+
+	public void setModuleUseBundle(boolean moduleUseBundle) {
+		this.moduleUseBundle = moduleUseBundle;
 	}
 
 }

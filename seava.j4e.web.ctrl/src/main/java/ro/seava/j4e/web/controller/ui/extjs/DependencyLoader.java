@@ -36,7 +36,10 @@ public class DependencyLoader {
 
 	private String urlUiExtjsModules;
 	private String urlUiExtjsModuleSubpath;
-	private String urlUiExtjsModulesI18n;
+	/**
+	 * Include component bundle in url?
+	 */
+	private boolean moduleUseBundle;
 
 	public void packFrameCmp(String bundle, String name, File file)
 			throws Exception {
@@ -87,9 +90,9 @@ public class DependencyLoader {
 	 * @return
 	 * @throws Exception
 	 */
-	public Dependencies resolveFrameDependencies(String frame) throws Exception {
+	public Dependencies resolveFrameDependencies(String cmp) throws Exception {
 		Dependencies d = new Dependencies();
-		this.resolveAllDependencies(frame, d);
+		this.resolveAllDependencies(cmp, d);
 		return d;
 	}
 
@@ -102,11 +105,11 @@ public class DependencyLoader {
 	 * @return
 	 * @throws Exception
 	 */
-	public void resolveFrameDependencies(String bundle, String name,
+	public void resolveFrameDependencies(String bundle, String frameFqn,
 			String language, List<String> listCmp, List<String> listTrl)
 			throws Exception {
 
-		String cmp = bundle + "/frame/" + name;
+		String cmp = bundle + "/frame/" + frameFqn;
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("Resolving frame dependencies for: {}", cmp);
@@ -157,10 +160,10 @@ public class DependencyLoader {
 		}
 
 		if (listCmp != null) {
-			listCmp.add(urlCmp(bundle, Dependencies.TYPE_UI, name));
+			listCmp.add(urlCmp(bundle, Dependencies.TYPE_UI, frameFqn));
 		}
 		if (listTrl != null) {
-			listTrl.add(urlTrl(bundle, Dependencies.TYPE_UI, name, language));
+			listTrl.add(urlTrl(bundle, Dependencies.TYPE_UI, frameFqn, language));
 		}
 
 	}
@@ -248,19 +251,14 @@ public class DependencyLoader {
 
 				if (_type.matches(Dependencies.TYPE_DS)) {
 					stack.addDs(dep);
-				}
-
-				if (_type.matches(Dependencies.TYPE_DC)) {
+				} else if (_type.matches(Dependencies.TYPE_DC)) {
 					stack.addDc(dep);
-				}
-
-				if (_type.matches(Dependencies.TYPE_LOV)) {
+				} else if (_type.matches(Dependencies.TYPE_LOV)) {
 					stack.addLov(dep);
-				}
-
-				if (_type.matches(Dependencies.TYPE_ASGN)) {
+				} else if (_type.matches(Dependencies.TYPE_ASGN)) {
 					stack.addAsgn(dep);
 				}
+
 				this.resolveAllDependencies(dep, stack);
 			}
 		}
@@ -280,9 +278,9 @@ public class DependencyLoader {
 		String[] tokens = cmp.split("/");
 		String bundle = tokens[0];
 		String type = tokens[1];
-		String name = tokens[2];
+		String fqn = tokens[2];
 
-		return this.urlDpd(bundle, type, name);
+		return this.urlDpd(bundle, type, fqn);
 	}
 
 	/**
@@ -293,10 +291,14 @@ public class DependencyLoader {
 	 * @param name
 	 * @return
 	 */
-	private String urlDpd(String bundle, String type, String name) {
-		return this.urlUiExtjsModules + "/" + bundle + "/" + bundle
-				+ ".ui.extjs" + this.urlUiExtjsModuleSubpath + "/" + type + "/"
-				+ name + ".jsdp";
+	private String urlDpd(String bundle, String type, String fqn) {
+		String _bp = "";
+		if (this.moduleUseBundle) {
+			_bp = "/" + bundle + "/" + bundle + ".ui.extjs"
+					+ this.urlUiExtjsModuleSubpath;
+		}
+		return this.urlUiExtjsModules + _bp + "/" + fqn.replaceAll("\\.", "/")
+				+ ".jsdp";
 	}
 
 	/**
@@ -324,13 +326,19 @@ public class DependencyLoader {
 	 * @param name
 	 * @return
 	 */
-	private String urlCmp(String bundle, String type, String name) {
-		String url = urlUiExtjsModules + "/" + bundle + "/" + bundle
-				+ ".ui.extjs" + urlUiExtjsModuleSubpath + "/" + type + "/"
-				+ name + ".js";
+	private String urlCmp(String bundle, String type, String fqn) {
+
+		String _bp = "";
+		if (this.moduleUseBundle) {
+			_bp = "/" + bundle + "/" + bundle + ".ui.extjs"
+					+ this.urlUiExtjsModuleSubpath;
+		}
+
+		String url = urlUiExtjsModules + _bp + "/" + fqn.replaceAll("\\.", "/")
+				+ ".js";
 		if (logger.isDebugEnabled()) {
 			logger.debug("Component/Type/Bundle: `{}/{}/{}`, url: `{}` ",
-					new String[] { name, type, bundle, url });
+					new String[] { fqn, type, bundle, url });
 		}
 		return url;
 	}
@@ -362,15 +370,21 @@ public class DependencyLoader {
 	 * @param language
 	 * @return
 	 */
-	private String urlTrl(String bundle, String type, String name,
+	private String urlTrl(String bundle, String type, String fqn,
 			String language) {
-		String url = urlUiExtjsModules + "/" + bundle + "/" + bundle
-				+ ".i18n" + urlUiExtjsModuleSubpath + "/" + language + "/" + type
-				+ "/" + name + ".js";
+
+		String _bp = "";
+		if (this.moduleUseBundle) {
+			_bp = "/" + bundle + "/" + bundle + ".i18n"
+					+ this.urlUiExtjsModuleSubpath;
+		}
+		String url = urlUiExtjsModules + _bp + "/" + language + "/"
+				+ fqn.replace(".ui.extjs.", ".i18n.").replaceAll("\\.", "/")
+				+ ".js";
 		if (logger.isDebugEnabled()) {
 			logger.debug(
 					"Component/Type/Bundle/Language: `{}/{}/{}/{}`, url: `{}` ",
-					new String[] { name, type, bundle, language, url });
+					new String[] { fqn, type, bundle, language, url });
 		}
 		return url;
 	}
@@ -407,11 +421,12 @@ public class DependencyLoader {
 		this.urlUiExtjsModuleSubpath = urlUiExtjsModuleSubpath;
 	}
 
-	public String getUrlUiExtjsModulesI18n() {
-		return urlUiExtjsModulesI18n;
+	public boolean isModuleUseBundle() {
+		return moduleUseBundle;
 	}
 
-	public void setUrlUiExtjsModulesI18n(String urlUiExtjsModulesI18n) {
-		this.urlUiExtjsModulesI18n = urlUiExtjsModulesI18n;
+	public void setModuleUseBundle(boolean moduleUseBundle) {
+		this.moduleUseBundle = moduleUseBundle;
 	}
+
 }

@@ -81,7 +81,7 @@ public class UiExtjsFrameController extends AbstractUiExtjsController {
 		if (logo != null && !logo.equals("")) {
 			model.put("logo", logo);
 		}
-		
+
 		if (Constants.PROP_WORKING_MODE_DEV.equalsIgnoreCase(this.getSettings()
 				.get(Constants.PROP_WORKING_MODE))) {
 
@@ -89,7 +89,7 @@ public class UiExtjsFrameController extends AbstractUiExtjsController {
 			List<String> listTrl = new ArrayList<String>();
 
 			DependencyLoader loader = this.getDependencyLoader();
-			loader.resolveFrameDependencies(bundle, frameName,
+			loader.resolveFrameDependencies(bundle, frameFQN,
 					(String) model.get("shortLanguage"), listCmp, listTrl);
 
 			model.put("frameDependenciesCmp", listCmp);
@@ -219,11 +219,12 @@ public class UiExtjsFrameController extends AbstractUiExtjsController {
 	 */
 	private DependencyLoader getDependencyLoader() {
 		DependencyLoader loader = new DependencyLoader();
-		loader.setUrlUiExtjsModulesI18n(getUiExtjsSettings()
-				.getUrlModulesI18n());
+		// loader.setUrlUiExtjsModulesI18n(getUiExtjsSettings()
+		// .getUrlModulesI18n());
 		loader.setUrlUiExtjsModules(getUiExtjsSettings().getUrlModules());
+		loader.setModuleUseBundle(getUiExtjsSettings().isModuleUseBundle());
 		loader.setUrlUiExtjsModuleSubpath(getUiExtjsSettings()
-				.getModuleSupath());
+				.getModuleSubpath());
 		return loader;
 	}
 }
