@@ -10,7 +10,7 @@
 
  
 	<bean id="application_uiExtjsSettings" scope="singleton"
-		lazy-init="true" class="ro.seava.j4e.web.settings.UiExtjsSettings">
+		lazy-init="true" class="seava.j4e.web.settings.UiExtjsSettings">
 		<property name="urlLib" value="${url.ui.extjs.lib}" />
 		<property name="urlCore" value="${url.ui.extjs.core}" />
 		<property name="urlCoreI18n" value="${url.ui.extjs.core.i18n}" />
@@ -23,7 +23,7 @@
 
 	<bean id="freemarkerConfig"
 		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-		<property name="templateLoaderPath" value="classpath:ro/seava/j4e/web/ftl/" />
+		<property name="templateLoaderPath" value="classpath:seava/j4e/web/ftl/" />
 		<property name="defaultEncoding" value="UTF-8" />
 	</bean>
 
@@ -34,25 +34,25 @@
 		<property name="suffix" value=".ftl" />
 	</bean>
 
-	<bean id="serviceLocator" class="ro.seava.j4e.presenter.service.ServiceLocatorJee" />
+	<bean id="serviceLocator" class="seava.j4e.presenter.service.ServiceLocatorJee" />
 
-	<bean id="dsExportWriterCsv" class="ro.seava.j4e.presenter.action.impex.DsCsvExport" scope="prototype"/>
-	<bean id="dsExportWriterXml" class="ro.seava.j4e.presenter.action.impex.DsXmlExport" scope="prototype"/>
-	<bean id="dsExportWriterJson" class="ro.seava.j4e.presenter.action.impex.DsJsonExport" scope="prototype"/>
-	<bean id="dsExportWriterHtml" class="ro.seava.j4e.presenter.action.impex.DsHtmlExport" scope="prototype"/>
+	<bean id="dsExportWriterCsv" class="seava.j4e.presenter.action.impex.DsCsvExport" scope="prototype"/>
+	<bean id="dsExportWriterXml" class="seava.j4e.presenter.action.impex.DsXmlExport" scope="prototype"/>
+	<bean id="dsExportWriterJson" class="seava.j4e.presenter.action.impex.DsJsonExport" scope="prototype"/>
+	<bean id="dsExportWriterHtml" class="seava.j4e.presenter.action.impex.DsHtmlExport" scope="prototype"/>
  
  	<bean id="dsCsvImport" scope="singleton" lazy-init="true" 
-		class="ro.seava.j4e.presenter.service.ds.DsImportUploadedCsv" />
+		class="seava.j4e.presenter.service.ds.DsImportUploadedCsv" />
 
-	<bean class="ro.seava.j4e.presenter.descriptor.DsDefinitions"/>
-	<bean class="ro.seava.j4e.presenter.descriptor.JobDefinitions"/>
+	<bean class="seava.j4e.presenter.descriptor.DsDefinitions"/>
+	<bean class="seava.j4e.presenter.descriptor.JobDefinitions"/>
 
 	<int:channel id="msgImportDataFile" />
 	<int:service-activator input-channel="msgImportDataFile"
 		output-channel="msgImportDataFile" method="execute">
-		<bean class="ro.seava.j4e.presenter.service.ds.ImportDataFileService" />
+		<bean class="seava.j4e.presenter.service.ds.ImportDataFileService" />
 	</int:service-activator>
 
-	<!--        <osgi:reference id="osgiImportDataPackageService" cardinality="0..1" interface="ro.seava.j4e.api.service.business.IImportDataPackageService" 
+	<!--        <osgi:reference id="osgiImportDataPackageService" cardinality="0..1" interface="seava.j4e.api.service.business.IImportDataPackageService" 
 		/> -->
 </beans>

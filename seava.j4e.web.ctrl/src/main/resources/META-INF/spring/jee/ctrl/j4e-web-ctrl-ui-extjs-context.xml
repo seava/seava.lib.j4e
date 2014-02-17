@@ -6,12 +6,12 @@
 		http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean name="uiExtjsMainController" scope="singleton" lazy-init="true"
-		class="ro.seava.j4e.web.controller.ui.extjs.UiExtjsMainController">
+		class="seava.j4e.web.controller.ui.extjs.UiExtjsMainController">
 		<property name="viewName" value="ui/extjs/indexMain" />
 	</bean>
 
 	<bean name="uiExtjsFrameController" scope="singleton" lazy-init="true"
-		class="ro.seava.j4e.web.controller.ui.extjs.UiExtjsFrameController">
+		class="seava.j4e.web.controller.ui.extjs.UiExtjsFrameController">
 		<property name="viewName" value="ui/extjs/indexFrame" />
 	</bean>
 </beans>

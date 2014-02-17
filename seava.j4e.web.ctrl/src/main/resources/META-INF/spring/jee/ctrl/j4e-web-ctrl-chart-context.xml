@@ -6,7 +6,7 @@
 		http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean name="chartController" scope="singleton" lazy-init="true"
-		class="ro.seava.j4e.web.controller.ui.chart.ChartController">
+		class="seava.j4e.web.controller.ui.chart.ChartController">
 	</bean>
 
 	<bean scope="singleton" lazy-init="true"

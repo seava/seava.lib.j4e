@@ -11,18 +11,18 @@
 
 	<bean name="securityAuthenticationClientUserService" scope="singleton"
 		lazy-init="true"
-		class="ro.seava.j4e.security.DefaultAuthenticationClientUserService" />
+		class="seava.j4e.security.DefaultAuthenticationClientUserService" />
   
 	<bean name="authorizationFactory" scope="singleton" lazy-init="true"
-		class="ro.seava.j4e.security.DummyAuthorizationFactory" />
+		class="seava.j4e.security.DummyAuthorizationFactory" />
 
-	<bean class="ro.seava.j4e.security.DummyAuthorizationForAsgn"
+	<bean class="seava.j4e.security.DummyAuthorizationForAsgn"
 		scope="singleton" lazy-init="true" />
 
-	<bean class="ro.seava.j4e.security.DummyAuthorizationForDs" scope="singleton"
+	<bean class="seava.j4e.security.DummyAuthorizationForDs" scope="singleton"
 		lazy-init="true" />
 
-	<bean class="ro.seava.j4e.security.DummyAuthorizationForJob"
+	<bean class="seava.j4e.security.DummyAuthorizationForJob"
 		scope="singleton" lazy-init="true" />
 
 </beans>

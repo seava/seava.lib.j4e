@@ -33,7 +33,7 @@
 		<property name="persistenceUnitPostProcessors">
 			<list>
 				<bean
-					class="ro.seava.j4e.business.spring.DnetPersistenceUnitPostProcessor">
+					class="seava.j4e.business.spring.DnetPersistenceUnitPostProcessor">
 					<constructor-arg value="${eclipselink.persistenceUnitName}" />					 
 					<constructor-arg>
 						<props>		
@@ -77,5 +77,5 @@
 	<tx:annotation-driven transaction-manager="transactionManager" />
 	
 	<bean id="defaultAsgnTxService" 
-	  	class="ro.seava.j4e.business.service.asgn.DefaultAsgnTxService"/>
+	  	class="seava.j4e.business.service.asgn.DefaultAsgnTxService"/>
 </beans>

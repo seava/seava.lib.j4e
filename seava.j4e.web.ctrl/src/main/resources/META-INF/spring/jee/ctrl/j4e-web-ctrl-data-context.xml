@@ -6,15 +6,15 @@
 		http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean scope="singleton" lazy-init="true"
-		class="ro.seava.j4e.web.controller.data.DefaultDsController">
+		class="seava.j4e.web.controller.data.DefaultDsController">
 	</bean>
 
 	<bean scope="singleton" lazy-init="true"
-		class="ro.seava.j4e.web.controller.data.DefaultAsgnController">
+		class="seava.j4e.web.controller.data.DefaultAsgnController">
 	</bean>
 
 	<bean scope="singleton" lazy-init="true"
-		class="ro.seava.j4e.web.controller.data.ImportDataPackageController">
+		class="seava.j4e.web.controller.data.ImportDataPackageController">
 	</bean>
 
 	<bean scope="singleton" lazy-init="true"

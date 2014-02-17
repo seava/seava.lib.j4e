@@ -14,7 +14,7 @@
 		<property name="location" value="classpath:seava.properties" />
 	</bean>
 
-	<bean id="settings" class="ro.seava.j4e.commons.Settings" scope="singleton"
+	<bean id="settings" class="seava.j4e.commons.Settings" scope="singleton"
 		lazy-init="true">
 
 		<constructor-arg>
@@ -66,7 +66,7 @@
 		<property name="productVersion" value="${product.version}" />
 	</bean>
 
-	<bean name="sysParams_Core" class="ro.seava.j4e.commons.SysParams_Core"
+	<bean name="sysParams_Core" class="seava.j4e.commons.SysParams_Core"
 		scope="singleton" lazy-init="true">
 		<property name="defaultValues">
 			<props>

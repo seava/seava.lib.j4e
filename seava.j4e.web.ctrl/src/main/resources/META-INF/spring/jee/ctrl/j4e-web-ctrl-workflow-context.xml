@@ -6,18 +6,18 @@
 		http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="workflowProcessDefinitionController" scope="singleton" lazy-init="true"
-		class="ro.seava.j4e.web.controller.workflow.WorkflowProcessDefinitionController">
+		class="seava.j4e.web.controller.workflow.WorkflowProcessDefinitionController">
 	</bean>
 
 	<bean id="workflowProcessInstanceController" scope="singleton" lazy-init="true"
-		class="ro.seava.j4e.web.controller.workflow.WorkflowProcessInstanceController">
+		class="seava.j4e.web.controller.workflow.WorkflowProcessInstanceController">
 	</bean>
 
 	<bean id="workflowTaskController" scope="singleton" lazy-init="true"
-		class="ro.seava.j4e.web.controller.workflow.WorkflowTaskController">
+		class="seava.j4e.web.controller.workflow.WorkflowTaskController">
 	</bean>
 
 	<bean id="workflowDeploymentController" scope="singleton" lazy-init="true"
-		class="ro.seava.j4e.web.controller.workflow.WorkflowDeploymentController">
+		class="seava.j4e.web.controller.workflow.WorkflowDeploymentController">
 	</bean>
 </beans>

@@ -6,7 +6,7 @@
 		http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean name="sessionController" scope="singleton" lazy-init="true"
-		class="ro.seava.j4e.web.controller.session.SessionController">
+		class="seava.j4e.web.controller.session.SessionController">
 		<property name="loginViewName" value="session/login" />
 	</bean>
 </beans>

@@ -9,6 +9,6 @@
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 
 	<bean id="fileUploadController" scope="singleton" lazy-init="true"
-		class="ro.seava.j4e.web.controller.upload.FileUploadController">
+		class="seava.j4e.web.controller.upload.FileUploadController">
 	</bean>
 </beans>

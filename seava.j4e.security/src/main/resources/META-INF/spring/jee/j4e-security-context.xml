@@ -8,10 +8,10 @@
 	<!-- AUTHENTICATION -->
 
 	<bean id="securityAdminUsersRepository" scope="singleton" lazy-init="true"
-		class="ro.seava.j4e.security.SystemAdministratorUsers">
+		class="seava.j4e.security.SystemAdministratorUsers">
 		<property name="users">
 			<list>
-				<bean class="ro.seava.j4e.security.SystemAdministratorUser">
+				<bean class="seava.j4e.security.SystemAdministratorUser">
 					<constructor-arg value="${sys.user.code}" />
 					<constructor-arg value="${sys.user.name}" />
 					<constructor-arg value="${sys.user.loginName}" />
@@ -28,7 +28,7 @@
 
 	<bean name="securityAuthenticationSystemUserService" scope="singleton"
 		lazy-init="true"
-		class="ro.seava.j4e.security.DefaultAuthenticationSystemUserService">
+		class="seava.j4e.security.DefaultAuthenticationSystemUserService">
 		<property name="repository" ref="securityAdminUsersRepository" />
 		<property name="settings" ref="settings" />
 	</bean>
