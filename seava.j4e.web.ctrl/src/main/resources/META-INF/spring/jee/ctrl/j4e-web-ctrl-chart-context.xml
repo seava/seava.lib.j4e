@@ -8,10 +8,4 @@
 	<bean name="chartController" scope="singleton" lazy-init="true"
 		class="seava.j4e.web.controller.ui.chart.ChartController">
 	</bean>
-
-	<bean scope="singleton" lazy-init="true"
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<property name="prefix" value="/WEB-INF/jsp/" />
-		<property name="suffix" value=".jsp" />
-	</bean>
 </beans>

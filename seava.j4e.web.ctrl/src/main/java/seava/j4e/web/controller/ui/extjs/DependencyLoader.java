@@ -187,8 +187,7 @@ public class DependencyLoader {
 			String responseBody = getHttpClient().execute(get, responseHandler);
 			writer.write(responseBody);
 		} catch (Exception e) {
-			// ignore maybe doesn't exist
-			e.printStackTrace();
+			logger.error("Cannot find content at url " + url);
 		} finally {
 			get.releaseConnection();
 		}
@@ -204,8 +203,8 @@ public class DependencyLoader {
 	 * @throws Exception
 	 */
 	private List<String> resolveCmpDependencies(String cmp) throws Exception {
-
-		HttpGet get = new HttpGet(this.urlDpd(cmp));
+		String url = this.urlDpd(cmp);
+		HttpGet get = new HttpGet(url);
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 
 		List<String> result = null;
@@ -219,6 +218,9 @@ public class DependencyLoader {
 
 		} catch (HttpResponseException e) {
 			if (e.getStatusCode() != 404) {
+				logger.error("Cannot find dependencies for component " + cmp
+						+ " at " + url);
+			} else {
 				e.printStackTrace();
 			}
 		} catch (ClientProtocolException e) {
@@ -338,7 +340,7 @@ public class DependencyLoader {
 				+ ".js";
 		if (logger.isDebugEnabled()) {
 			logger.debug("Component/Type/Bundle: `{}/{}/{}`, url: `{}` ",
-					new String[] { fqn, type, bundle, url });
+					new Object[] { fqn, type, bundle, url });
 		}
 		return url;
 	}
@@ -384,7 +386,7 @@ public class DependencyLoader {
 		if (logger.isDebugEnabled()) {
 			logger.debug(
 					"Component/Type/Bundle/Language: `{}/{}/{}/{}`, url: `{}` ",
-					new String[] { fqn, type, bundle, language, url });
+					new Object[] { fqn, type, bundle, language, url });
 		}
 		return url;
 	}
