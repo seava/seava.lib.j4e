@@ -50,6 +50,18 @@ public abstract class AbstractPresenterBaseService extends
 	}
 
 	/**
+	 * Lookup a data-source service based on the model class
+	 * 
+	 * @param dsModelClass
+	 * @return
+	 * @throws Exception
+	 */
+	public <M, F, P> IDsService<M, F, P> findDsService(Class<M> dsModelClass)
+			throws Exception {
+		return this.findDsService(dsModelClass.getSimpleName());
+	}
+
+	/**
 	 * Lookup an entity service.
 	 * 
 	 * @param <E>
