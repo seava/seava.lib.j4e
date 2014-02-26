@@ -87,19 +87,19 @@ public class AbstractDsReadController<M, F, P> extends
 
 			if (logger.isInfoEnabled()) {
 				logger.info("Processing request: {}.{} -> action = {} ",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.DS_ACTION_QUERY });
 			}
 
 			if (logger.isDebugEnabled()) {
 				logger.debug("  --> request-filter: {} ",
-						new String[] { filterString });
+						new Object[] { filterString });
 				logger.debug("  --> request-params: {} ",
-						new String[] { paramString });
+						new Object[] { paramString });
 				logger.debug(
 						"  --> request-orderBy: sort={}, sense={}, orderBy={}",
-						new String[] { orderByCol, orderBySense, orderBy });
-				logger.debug("  --> request-result-range: {} ", new String[] {
+						new Object[] { orderByCol, orderBySense, orderBy });
+				logger.debug("  --> request-result-range: {} ", new Object[] {
 						resultStart + "", (resultStart + resultSize) + "" });
 			}
 			this.prepareRequest(request, response);
@@ -200,16 +200,16 @@ public class AbstractDsReadController<M, F, P> extends
 
 			if (logger.isInfoEnabled()) {
 				logger.info("Processing request: {}.{} -> action = {} ",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.DS_ACTION_EXPORT });
 			}
 
 			if (logger.isDebugEnabled()) {
 				logger.debug("  --> request-filter: {} ",
-						new String[] { filterString });
+						new Object[] { filterString });
 				logger.debug("  --> request-params: {} ",
-						new String[] { paramString });
-				logger.debug("  --> request-result-range: {} ", new String[] {
+						new Object[] { paramString });
+				logger.debug("  --> request-result-range: {} ", new Object[] {
 						resultStart + "", (resultStart + resultSize) + "" });
 			}
 
@@ -334,7 +334,7 @@ public class AbstractDsReadController<M, F, P> extends
 
 			if (logger.isInfoEnabled()) {
 				logger.info("Processing request: {}.{} -> action = {} ",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.DS_ACTION_INFO });
 
 			}

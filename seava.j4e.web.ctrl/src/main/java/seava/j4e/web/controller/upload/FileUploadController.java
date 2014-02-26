@@ -62,7 +62,7 @@ public class FileUploadController extends AbstractBaseController {
 
 		if (logger.isInfoEnabled()) {
 			logger.info("Processing file upload request with-handler {} ",
-					new String[] { handler });
+					new Object[] { handler });
 		}
 
 		if (file.isEmpty()) {

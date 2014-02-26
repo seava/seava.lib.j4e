@@ -141,7 +141,7 @@ public abstract class AbstractDsConverter<M, E> extends AbstractPresenterBase
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("Model-to-entity conversion: {} -> {} ",
-					new String[] { this.modelClass.getSimpleName(),
+					new Object[] { this.modelClass.getSimpleName(),
 							this.entityClass.getSimpleName() });
 		}
 

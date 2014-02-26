@@ -66,15 +66,15 @@ public class AbstractDsRpcController<M, F, P> extends
 			if (logger.isInfoEnabled()) {
 				logger.info(
 						"Processing request: {}.{} -> action = {}-data / {}",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.DS_ACTION_RPC, rpcName });
 			}
 
 			if (logger.isDebugEnabled()) {
 				logger.debug("  --> request-data: {} ",
-						new String[] { dataString });
+						new Object[] { dataString });
 				logger.debug("  --> request-params: {} ",
-						new String[] { paramString });
+						new Object[] { paramString });
 			}
 
 			this.prepareRequest(request, response);
@@ -150,16 +150,16 @@ public class AbstractDsRpcController<M, F, P> extends
 			if (logger.isInfoEnabled()) {
 				logger.info(
 						"Processing request: {}.{} -> action = {}-dataList / {}",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.DS_ACTION_RPC, rpcName });
 			}
 
 			if (logger.isDebugEnabled()) {
 
 				logger.debug("  --> request-dataList: {} ",
-						new String[] { dataString });
+						new Object[] { dataString });
 				logger.debug("  --> request-params: {} ",
-						new String[] { paramString });
+						new Object[] { paramString });
 			}
 			this.prepareRequest(request, response);
 
@@ -230,15 +230,15 @@ public class AbstractDsRpcController<M, F, P> extends
 			if (logger.isInfoEnabled()) {
 				logger.info(
 						"Processing request: {}.{} -> action = {}-filter / {}",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.DS_ACTION_RPC, rpcName });
 			}
 
 			if (logger.isDebugEnabled()) {
 				logger.debug("  --> request-data: {} ",
-						new String[] { dataString });
+						new Object[] { dataString });
 				logger.debug("  --> request-params: {} ",
-						new String[] { paramString });
+						new Object[] { paramString });
 			}
 
 			this.prepareRequest(request, response);

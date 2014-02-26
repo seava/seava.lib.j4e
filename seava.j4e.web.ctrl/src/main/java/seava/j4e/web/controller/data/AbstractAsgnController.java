@@ -73,20 +73,20 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			if (logger.isInfoEnabled()) {
 				logger.info("Processing request: {}.{} -> action = {} ",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.ASGN_ACTION_QUERY_LEFT });
 			}
 
 			if (logger.isDebugEnabled()) {
 				logger.debug(
 						"  --> request-filter: objectId={}, selectionId={} data={}",
-						new String[] { objectId, selectionId, dataString });
+						new Object[] { objectId, selectionId, dataString });
 				logger.debug("  --> request-params: {} ",
-						new String[] { paramString });
+						new Object[] { paramString });
 				logger.debug(
 						"  --> request-orderBy: sort={}, sense={}, orderBy={}",
-						new String[] { orderByCol, orderBySense, orderBy });
-				logger.debug("  --> request-result-range: {} ", new String[] {
+						new Object[] { orderByCol, orderBySense, orderBy });
+				logger.debug("  --> request-result-range: {} ", new Object[] {
 						resultStart + "", (resultStart + resultSize) + "" });
 			}
 
@@ -170,20 +170,20 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			if (logger.isInfoEnabled()) {
 				logger.info("Processing request: {}.{} -> action = {} ",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.ASGN_ACTION_QUERY_RIGHT });
 			}
 
 			if (logger.isDebugEnabled()) {
 				logger.debug(
 						"  --> request-filter: objectId={}, selectionId={} data={}",
-						new String[] { objectId, selectionId, dataString });
+						new Object[] { objectId, selectionId, dataString });
 				logger.debug("  --> request-params: {} ",
-						new String[] { paramString });
+						new Object[] { paramString });
 				logger.debug(
 						"  --> request-orderBy: sort={}, sense={}, orderBy={}",
-						new String[] { orderByCol, orderBySense, orderBy });
-				logger.debug("  --> request-result-range: {} ", new String[] {
+						new Object[] { orderByCol, orderBySense, orderBy });
+				logger.debug("  --> request-result-range: {} ", new Object[] {
 						resultStart + "", (resultStart + resultSize) + "" });
 			}
 
@@ -253,14 +253,14 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			if (logger.isInfoEnabled()) {
 				logger.info("Processing request: {}.{} -> action = {} ",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.ASGN_ACTION_SETUP });
 			}
 
 			if (logger.isDebugEnabled()) {
 				logger.debug(
 						"  --> request-filter: objectId={}, selectionId={}",
-						new String[] { objectId, selectionId });
+						new Object[] { objectId, selectionId });
 			}
 
 			this.prepareRequest(request, response);
@@ -307,14 +307,14 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			if (logger.isInfoEnabled()) {
 				logger.info("Processing request: {}.{} -> action = {} ",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.ASGN_ACTION_MOVE_LEFT });
 			}
 
 			if (logger.isDebugEnabled()) {
 				logger.debug(
 						"  --> request-filter: objectId={}, selectionId={}, selectedIds={} ",
-						new String[] { objectId, selectionId, selectedIds });
+						new Object[] { objectId, selectionId, selectedIds });
 			}
 
 			this.prepareRequest(request, response);
@@ -364,14 +364,14 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			if (logger.isInfoEnabled()) {
 				logger.info("Processing request: {}.{} -> action = {} ",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.ASGN_ACTION_MOVE_RIGHT });
 			}
 
 			if (logger.isDebugEnabled()) {
 				logger.debug(
 						"  --> request-filter: objectId={}, selectionId={}, selectedIds={} ",
-						new String[] { objectId, selectionId, selectedIds });
+						new Object[] { objectId, selectionId, selectedIds });
 			}
 
 			this.prepareRequest(request, response);
@@ -411,16 +411,16 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			if (logger.isInfoEnabled()) {
 				logger.info("Processing request: {}.{} -> action = {} ",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.ASGN_ACTION_MOVE_LEFT_ALL });
 			}
 
 			if (logger.isDebugEnabled()) {
 				logger.debug(
 						"  --> request-filter: objectId={}, selectionId={} data={}",
-						new String[] { objectId, selectionId, dataString });
+						new Object[] { objectId, selectionId, dataString });
 				logger.debug("  --> request-params: {} ",
-						new String[] { paramString });
+						new Object[] { paramString });
 			}
 
 			this.prepareRequest(request, response);
@@ -466,16 +466,16 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			if (logger.isInfoEnabled()) {
 				logger.info("Processing request: {}.{} -> action = {} ",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.ASGN_ACTION_MOVE_RIGHT_ALL });
 			}
 
 			if (logger.isDebugEnabled()) {
 				logger.debug(
 						"  --> request-filter: objectId={}, selectionId={} data={}",
-						new String[] { objectId, selectionId, dataString });
+						new Object[] { objectId, selectionId, dataString });
 				logger.debug("  --> request-params: {} ",
-						new String[] { paramString });
+						new Object[] { paramString });
 			}
 
 			this.prepareRequest(request, response);
@@ -532,14 +532,14 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			if (logger.isInfoEnabled()) {
 				logger.info("Processing request: {}.{} -> action = {} ",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.ASGN_ACTION_RESET });
 			}
 
 			if (logger.isDebugEnabled()) {
 				logger.debug(
 						"  --> request-filter: objectId={}, selectionId={} ",
-						new String[] { objectId, selectionId });
+						new Object[] { objectId, selectionId });
 			}
 
 			this.prepareRequest(request, response);
@@ -587,14 +587,14 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			if (logger.isInfoEnabled()) {
 				logger.info("Processing request: {}.{} -> action = {} ",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.ASGN_ACTION_SAVE });
 			}
 
 			if (logger.isDebugEnabled()) {
 				logger.debug(
 						"  --> request-filter: objectId={}, selectionId={} ",
-						new String[] { objectId, selectionId });
+						new Object[] { objectId, selectionId });
 			}
 
 			this.prepareRequest(request, response);
@@ -641,13 +641,13 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			if (logger.isInfoEnabled()) {
 				logger.info("Processing request: {}.{} -> action = {} ",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.ASGN_ACTION_CLEANUP });
 			}
 
 			if (logger.isDebugEnabled()) {
 				logger.debug("  --> request-filter: selectionId={} ",
-						new String[] { selectionId });
+						new Object[] { selectionId });
 			}
 
 			this.prepareRequest(request, response);

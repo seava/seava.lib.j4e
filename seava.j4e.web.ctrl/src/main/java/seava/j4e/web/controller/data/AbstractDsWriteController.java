@@ -62,15 +62,15 @@ public class AbstractDsWriteController<M, F, P> extends
 
 			if (logger.isInfoEnabled()) {
 				logger.info("Processing request: {}.{} -> action = {} ",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.DS_ACTION_INSERT });
 			}
 
 			if (logger.isDebugEnabled()) {
 				logger.debug("  --> request-data: {} ",
-						new String[] { dataString });
+						new Object[] { dataString });
 				logger.debug("  --> request-params: {} ",
-						new String[] { paramString });
+						new Object[] { paramString });
 			}
 
 			this.prepareRequest(request, response);
@@ -144,15 +144,15 @@ public class AbstractDsWriteController<M, F, P> extends
 
 			if (logger.isInfoEnabled()) {
 				logger.info("Processing request: {}.{} -> action = {} ",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.DS_ACTION_UPDATE });
 			}
 
 			if (logger.isDebugEnabled()) {
 				logger.debug("  --> request-data: {} ",
-						new String[] { dataString });
+						new Object[] { dataString });
 				logger.debug("  --> request-params: {} ",
-						new String[] { paramString });
+						new Object[] { paramString });
 			}
 
 			this.prepareRequest(request, response);
@@ -225,7 +225,7 @@ public class AbstractDsWriteController<M, F, P> extends
 
 			if (logger.isInfoEnabled()) {
 				logger.info("Processing request: {}.{} -> action = {} ",
-						new String[] { resourceName, dataFormat,
+						new Object[] { resourceName, dataFormat,
 								Constants.DS_ACTION_DELETE });
 			}
 

@@ -166,7 +166,7 @@ public abstract class AbstractEntityDsReadService<M extends AbstractDsModel<E>, 
 		if (logger.isDebugEnabled()) {
 			logger.debug(
 					"Found {} results. Applying entity-to-model conversion ( {} -> {} ) for the result.",
-					new String[] { entities.size() + "",
+					new Object[] { entities.size() + "",
 							this.getEntityClass().getSimpleName(),
 							this.getModelClass().getSimpleName() });
 		}

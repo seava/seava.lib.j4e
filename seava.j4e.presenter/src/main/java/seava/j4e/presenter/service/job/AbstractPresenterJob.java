@@ -62,7 +62,7 @@ public abstract class AbstractPresenterJob extends AbstractPresenterBaseService
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("Executing job {}: \n - clientId={} \n - user={} ",
-					new String[] { this.getClass().getCanonicalName(),
+					new Object[] { this.getClass().getCanonicalName(),
 							clientId, userCode });
 		}
 

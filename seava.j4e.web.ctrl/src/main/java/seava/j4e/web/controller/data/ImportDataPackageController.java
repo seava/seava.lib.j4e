@@ -47,11 +47,11 @@ public class ImportDataPackageController extends AbstractBaseController {
 		if (logger.isDebugEnabled()) {
 			if (dataPackage != null) {
 				logger.debug("  --> dataPackage: {} ",
-						new String[] { dataPackage });
+						new Object[] { dataPackage });
 			} else {
 				logger.debug(
 						"  --> dataFile: {}, dsName: {}, ukFieldName: {} ",
-						new String[] { dataFile, dsName, ukFieldName });
+						new Object[] { dataFile, dsName, ukFieldName });
 			}
 		}
 

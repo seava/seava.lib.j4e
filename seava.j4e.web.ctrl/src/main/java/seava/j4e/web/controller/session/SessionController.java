@@ -88,9 +88,9 @@ public class SessionController extends AbstractBaseController {
 		model.put("productVersion", this.getSettings().getProductVersion());
 		model.put("productUrl", this.getSettings().getProductUrl());
 		model.put("productVendor", this.getSettings().getProductVendor());
-		
+
 		model.put("ctxpath", this.getSettings().get(Constants.PROP_CTXPATH));
-		
+
 		return new ModelAndView(this.loginViewName, model);
 
 	}
@@ -124,7 +124,7 @@ public class SessionController extends AbstractBaseController {
 			if (logger.isDebugEnabled()) {
 				logger.debug(
 						"  --> request-params: user={}, client={}, pswd=*** ",
-						new String[] { username, clientCode });
+						new Object[] { username, clientCode });
 			}
 
 			request.getSession().invalidate();
@@ -185,7 +185,7 @@ public class SessionController extends AbstractBaseController {
 			if (logger.isDebugEnabled()) {
 				logger.debug(
 						"  --> request-params: user={}, client={}, pswd=*** ",
-						new String[] { username, clientCode });
+						new Object[] { username, clientCode });
 			}
 
 			// TODO: copy attributes ?
