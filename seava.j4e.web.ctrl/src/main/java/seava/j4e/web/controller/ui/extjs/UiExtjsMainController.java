@@ -35,22 +35,12 @@ public class UiExtjsMainController extends AbstractUiExtjsController {
 	protected ModelAndView home(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
-		// if (this.setupParticipants != null) {
-		// for (ISetupParticipant sp : setupParticipants) {
-		// if (sp.hasWorkToDo()) {
-		// response.sendRedirect("/nan21.dnet.core.setup");
-		// return null;
-		// }
-		// }
-		// }
-
 		try {
 			@SuppressWarnings("unused")
 			ISessionUser su = (ISessionUser) SecurityContextHolder.getContext()
 					.getAuthentication().getPrincipal();
 
 		} catch (Exception e) {
-			// TODO: parameterize
 			response.sendRedirect(this.getSettings().get(
 					Constants.PROP_LOGIN_PAGE));
 			return null;

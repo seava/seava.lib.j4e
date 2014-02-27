@@ -27,6 +27,7 @@ import seava.j4e.api.session.Session;
 import seava.j4e.web.controller.AbstractBaseController;
 import seava.j4e.web.settings.UiExtjsSettings;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -64,8 +65,6 @@ public abstract class AbstractUiExtjsController extends AbstractBaseController {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
-		// request.setCharacterEncoding("UTF-8");
-		// response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
 
 		if (logger.isInfoEnabled()) {
@@ -131,7 +130,8 @@ public abstract class AbstractUiExtjsController extends AbstractBaseController {
 		String hostUrl = ((request.isSecure()) ? "https" : "http") + "://"
 				+ server + ((port != 80) ? (":" + port) : "");// + contextPath;
 
-		model.put("productName", this.getSettings().getProductName());
+		model.put("productName", StringEscapeUtils.escapeJavaScript(this
+				.getSettings().getProductName()));
 		model.put("productDescription", this.getSettings()
 				.getProductDescription());
 		model.put("productVersion", this.getSettings().getProductVersion());
@@ -154,8 +154,12 @@ public abstract class AbstractUiExtjsController extends AbstractBaseController {
 		model.put("urlUiExtjsModuleUseBundle", getUiExtjsSettings()
 				.isModuleUseBundle());
 
-		model.put("shortLanguage", this.resolveLang(request, response));
-		model.put("theme", this.resolveTheme(request, response));
+		String lang = this.resolveLang(request, response);
+		model.put("shortLanguage", StringEscapeUtils.escapeJavaScript(lang));
+
+		String theme = this.resolveTheme(request, response);
+		model.put("theme", StringEscapeUtils.escapeJavaScript(theme));
+
 		model.put("sysCfg_workingMode",
 				this.getSettings().get(Constants.PROP_WORKING_MODE));
 
@@ -329,8 +333,10 @@ public abstract class AbstractUiExtjsController extends AbstractBaseController {
 	 */
 	private String resolveTheme(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
+
 		Cookie[] cookies = request.getCookies();
 		Cookie c = this.getCookie(cookies, Constants.COOKIE_NAME_THEME);
+
 		if (c == null) {
 
 			String value = this.getSettings().getParam(
