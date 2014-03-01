@@ -22,7 +22,8 @@ import seava.j4e.api.model.IModelWithId;
 import org.hibernate.validator.constraints.NotBlank;
 
 @MappedSuperclass
-public abstract class AbstractEntity implements IModelWithId, Serializable {
+public abstract class AbstractEntity implements IModelWithId<String>,
+		Serializable {
 
 	private static final long serialVersionUID = -8865917134914502125L;
 

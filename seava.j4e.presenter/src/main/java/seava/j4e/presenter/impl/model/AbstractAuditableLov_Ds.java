@@ -6,7 +6,7 @@ import seava.j4e.api.model.IModelWithId;
 import seava.j4e.presenter.model.AbstractDsModel;
 
 public class AbstractAuditableLov_Ds<E> extends AbstractDsModel<E> implements
-		IModelWithId, IModelWithClientId {
+		IModelWithId<String>, IModelWithClientId {
 
 	public static final String f_id = "id";
 	public static final String f_clientId = "clientId";

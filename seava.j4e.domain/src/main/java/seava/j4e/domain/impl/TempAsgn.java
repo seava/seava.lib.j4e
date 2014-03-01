@@ -6,14 +6,17 @@
 package seava.j4e.domain.impl;
 
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+
 import seava.j4e.api.Constants;
 import seava.j4e.api.model.IModelWithId;
+
 import org.eclipse.persistence.annotations.ReadOnly;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -36,12 +39,12 @@ public class TempAsgn implements IModelWithId, Serializable {
 	@Column(name = "ASGN", nullable = false, length = 255)
 	private String asgn;
 
-	public String getId() {
+	public Object getId() {
 		return this.id;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setId(Object id) {
+		this.id = (String) id;
 	}
 
 	public String getAsgn() {

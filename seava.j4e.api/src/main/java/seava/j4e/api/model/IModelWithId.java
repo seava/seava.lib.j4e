@@ -6,12 +6,15 @@
 package seava.j4e.api.model;
 
 /**
- * Interface to be implemented by all models(entities and view-objects) 
- * which have an <code>id</code> primary key.   
+ * Interface to be implemented by all models(entities and view-objects) which
+ * have an <code>id</code> primary key.
+ * 
  * @author amathe
- *
+ * 
  */
-public interface IModelWithId {
-	public String getId();	
-	public void setId(String id);	
+public interface IModelWithId<T> {
+
+	public T getId();
+
+	public void setId(T id);
 }

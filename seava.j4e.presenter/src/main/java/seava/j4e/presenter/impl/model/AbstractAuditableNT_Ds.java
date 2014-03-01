@@ -7,7 +7,7 @@ import seava.j4e.api.model.IModelWithId;
 import seava.j4e.presenter.model.AbstractDsModel;
 
 public class AbstractAuditableNT_Ds<E> extends AbstractDsModel<E> implements
-		IModelWithId {
+		IModelWithId<String> {
 
 	public static final String f_id = "id";
 	public static final String f_createdAt = "createdAt";

@@ -7,7 +7,7 @@ import seava.j4e.api.model.IModelWithId;
 import seava.j4e.presenter.model.AbstractDsModel;
 
 public class AbstractTypeNT_Ds<E> extends AbstractDsModel<E> implements
-		IModelWithId {
+		IModelWithId<String> {
 
 	public static final String f_id = "id";
 	public static final String f_name = "name";
@@ -109,7 +109,6 @@ public class AbstractTypeNT_Ds<E> extends AbstractDsModel<E> implements
 
 	public void setId(String id) {
 		this.id = id;
-
 	}
 
 	public Date getCreatedAt() {
