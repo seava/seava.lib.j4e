@@ -132,6 +132,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * single entity and delegates to the <code> insert(List<E> list)</code>
 	 * method
 	 */
+	@Transactional
 	public void insert(E e) throws BusinessException {
 		List<E> list = new ArrayList<E>();
 		list.add(e);
@@ -229,6 +230,7 @@ public abstract class AbstractEntityWriteService<E> extends
 	 * single entity and delegates to the <code> update(List<E> list)</code>
 	 * method
 	 */
+	@Transactional
 	public void update(E e) throws BusinessException {
 		List<E> list = new ArrayList<E>();
 		list.add(e);
