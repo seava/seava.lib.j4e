@@ -127,7 +127,7 @@ public abstract class AbstractEntityDsWriteService<M extends AbstractDsModel<E>,
 						.getClient().getId());
 			}
 			if (ds instanceof IModelWithId) {
-				IModelWithId _ds = (IModelWithId) ds;
+				IModelWithId<?> _ds = (IModelWithId<?>) ds;
 				if (_ds.getId() != null && _ds.getId().equals("")) {
 					_ds.setId(null);
 				}
@@ -285,7 +285,7 @@ public abstract class AbstractEntityDsWriteService<M extends AbstractDsModel<E>,
 		for (M ds : list) {
 			this.preUpdate(ds, params);
 			// TODO: optimize me
-			E e = lookupEntityById(entities, ((IModelWithId) ds).getId());
+			E e = lookupEntityById(entities, ((IModelWithId<?>) ds).getId());
 			this.preUpdateBeforeEntity(ds, e, params);
 			this.getConverter().modelToEntity(ds, e, false,
 					_entityService.getEntityManager());
@@ -295,7 +295,7 @@ public abstract class AbstractEntityDsWriteService<M extends AbstractDsModel<E>,
 		_entityService.update(entities);
 		for (M ds : list) {
 			E e = _entityService.getEntityManager().find(this.getEntityClass(),
-					((IModelWithId) ds).getId());
+					((IModelWithId<?>) ds).getId());
 			postUpdateBeforeModel(ds, e, params);
 			this.getConverter().entityToModel(e, ds,
 					_entityService.getEntityManager(), null);
@@ -327,7 +327,7 @@ public abstract class AbstractEntityDsWriteService<M extends AbstractDsModel<E>,
 	 */
 	protected <T> T lookupEntityById(List<T> list, Object id) {
 		for (T e : list) {
-			if (((IModelWithId) e).getId().equals(id)) {
+			if (((IModelWithId<?>) e).getId().equals(id)) {
 				return e;
 			}
 		}

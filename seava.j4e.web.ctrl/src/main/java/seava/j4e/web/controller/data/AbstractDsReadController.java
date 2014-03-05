@@ -5,8 +5,12 @@
  */
 package seava.j4e.web.controller.data;
 
+import java.io.File;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.Writer;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,18 +31,28 @@ import seava.j4e.api.descriptor.IDsDefinitions;
 import seava.j4e.api.enums.SysParam;
 import seava.j4e.api.service.presenter.IDsService;
 import seava.j4e.api.session.Session;
+import seava.j4e.commons.SysParams_Core;
+import seava.j4e.presenter.action.impex.ExportInfo;
+import seava.j4e.presenter.action.marshaller.ModelPrinter;
 import seava.j4e.presenter.action.marshaller.XmlMarshaller;
 import seava.j4e.web.result.ActionResultFind;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import freemarker.template.Configuration;
+import freemarker.template.ObjectWrapper;
+import freemarker.template.Template;
 
 public class AbstractDsReadController<M, F, P> extends
 		AbstractDsController<M, F, P> {
@@ -444,137 +458,136 @@ public class AbstractDsReadController<M, F, P> extends
 			@RequestParam(value = Constants.REQUEST_PARAM_EXPORT_INFO, required = true, defaultValue = "") String exportInfoString,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-		return null;
-		// try {
-		//
-		// if (logger.isInfoEnabled()) {
-		// logger.info("Processing request: {}.{} -> action = {} ",
-		// new String[] { resourceName, dataFormat,
-		// Constants.DS_ACTION_PRINT });
-		// }
-		//
-		// if (logger.isDebugEnabled()) {
-		//
-		// logger.debug("  --> request-filter: {} ",
-		// new String[] { filterString });
-		// logger.debug("  --> request-params: {} ",
-		// new String[] { paramString });
-		// logger.debug("  --> request-result-range: {} ", new String[] {
-		// resultStart + "", (resultStart + resultSize) + "" });
-		// }
-		//
-		// this.prepareRequest(request, response);
-		//
-		// this.authorizeDsAction(resourceName, Constants.DS_ACTION_EXPORT,
-		// null);
-		//
-		// IDsService<M, F, P> service = this.findDsService(resourceName);
-		//
-		// IDsMarshaller<M, F, P> marshaller = service
-		// .createMarshaller("json");
-		//
-		// F filter = marshaller.readFilterFromString(filterString);
-		// P params = marshaller.readParamsFromString(paramString);
-		//
-		// ExportInfo exportInfo = marshaller.readDataFromString(
-		// exportInfoString, ExportInfo.class);
-		// exportInfo.prepare(service.getModelClass());
-		//
-		// IQueryBuilder<M, F, P> builder = service.createQueryBuilder()
-		// .addFetchLimit(resultStart, resultSize).addFilter(filter)
-		// .addParams(params);
-		//
-		// if (orderBy != null && !orderBy.equals("")) {
-		// List<SortToken> sortTokens = marshaller.readListFromString(
-		// orderBy, SortToken.class);
-		// builder.addSortInfo(sortTokens);
-		// } else {
-		// builder.addSortInfo(orderByCol, orderBySense);
-		// }
-		//
-		// if (filterRulesString != null && !filterRulesString.equals("")) {
-		// List<FilterRule> filterRules = marshaller.readListFromString(
-		// filterRulesString, FilterRule.class);
-		// builder.addFilterRules(filterRules);
-		// }
-		//
-		// List<M> data = service.find(builder);
-		//
-		// File _tplDir = null;
-		// String _tplName = null;
-		//
-		// String _tpl = this.getSettings().getParam(
-		// SysParams_Core.CORE_PRINT_HTML_TPL);
-		//
-		// if (_tpl == null || "".equals(_tpl)) {
-		// _tpl = "print-template/print.ftl";
-		// }
-		//
-		// _tpl = Session.user.get().getWorkspace().getWorkspacePath() + "/"
-		// + _tpl;
-		// File _tplFile = new File(_tpl);
-		//
-		// _tplDir = _tplFile.getParentFile();
-		// _tplName = _tplFile.getName();
-		//
-		// if (!_tplFile.exists()) {
-		//
-		// // _tplDir = _tplFile.getParentFile();
-		//
-		// if (!_tplDir.exists()) {
-		// _tplDir.mkdirs();
-		// }
-		//
-		// Resource resource = new ClassPathResource(
-		// "WEB-INF/freemarker/print.ftl");
-		// FileUtils.copyFile(resource.getFile(), _tplFile);
-		//
-		// }
-		//
-		// Configuration cfg = new Configuration();
-		// cfg.setObjectWrapper(ObjectWrapper.DEFAULT_WRAPPER);
-		// cfg.setDirectoryForTemplateLoading(_tplDir);
-		//
-		// Map<String, Object> root = new HashMap<String, Object>();
-		//
-		// root.put("printer", new ModelPrinter());
-		// root.put("data", data);
-		// root.put("filter", filter);
-		// root.put("params", params);
-		// root.put("client", Session.user.get().getClient());
-		//
-		// Map<String, Object> reportConfig = new HashMap<String, Object>();
-		// reportConfig.put(
-		// "logo",
-		// this.getSettings().getParam(
-		// SysParams_Core.CORE_LOGO_URL_REPORT));
-		// reportConfig.put("runBy", Session.user.get().getName());
-		// reportConfig.put("runAt", new Date());
-		// reportConfig.put("title", exportInfo.getTitle());
-		// reportConfig.put("orientation", exportInfo.getLayout());
-		// reportConfig.put("columns", exportInfo.getColumns());
-		// reportConfig.put("filter", exportInfo.getFilter());
-		//
-		// root.put("cfg", reportConfig);
-		//
-		// if (dataFormat.equals(Constants.DATA_FORMAT_HTML)) {
-		// response.setContentType("text/html; charset=UTF-8");
-		// }
-		//
-		// Template temp = cfg.getTemplate(_tplName);
-		// Writer out = new OutputStreamWriter(response.getOutputStream(),
-		// response.getCharacterEncoding());
-		// temp.process(root, out);
-		// out.flush();
 		// return null;
-		// } catch (Exception e) {
-		//
-		// e.printStackTrace();
-		// return null;
-		// // return this.handleException(e, response);
-		// } finally {
-		// this.finishRequest();
-		// }
+		try {
+
+			if (logger.isInfoEnabled()) {
+				logger.info("Processing request: {}.{} -> action = {} ",
+						new Object[] { resourceName, dataFormat,
+								Constants.DS_ACTION_PRINT });
+			}
+
+			if (logger.isDebugEnabled()) {
+
+				logger.debug("  --> request-filter: {} ",
+						new Object[] { filterString });
+				logger.debug("  --> request-params: {} ",
+						new Object[] { paramString });
+				logger.debug("  --> request-result-range: {} ", new Object[] {
+						resultStart + "", (resultStart + resultSize) + "" });
+			}
+
+			this.prepareRequest(request, response);
+
+			this.authorizeDsAction(resourceName, Constants.DS_ACTION_EXPORT,
+					null);
+
+			IDsService<M, F, P> service = this.findDsService(resourceName);
+
+			IDsMarshaller<M, F, P> marshaller = service
+					.createMarshaller("json");
+
+			F filter = marshaller.readFilterFromString(filterString);
+			P params = marshaller.readParamsFromString(paramString);
+
+			ExportInfo exportInfo = marshaller.readDataFromString(
+					exportInfoString, ExportInfo.class);
+			exportInfo.prepare(service.getModelClass());
+
+			IQueryBuilder<M, F, P> builder = service.createQueryBuilder()
+					.addFetchLimit(resultStart, resultSize).addFilter(filter)
+					.addParams(params);
+
+			if (orderBy != null && !orderBy.equals("")) {
+				List<ISortToken> sortTokens = marshaller
+						.readSortTokens(orderBy);
+				builder.addSortInfo(sortTokens);
+			} else {
+				builder.addSortInfo(orderByCol, orderBySense);
+			}
+
+			if (filterRulesString != null && !filterRulesString.equals("")) {
+				List<IFilterRule> filterRules = marshaller
+						.readFilterRules(filterRulesString);
+				builder.addFilterRules(filterRules);
+			}
+
+			List<M> data = service.find(builder);
+
+			File _tplDir = null;
+			String _tplName = null;
+
+			String _tpl = this.getSettings().getParam(
+					SysParam.CORE_PRINT_HTML_TPL.name());
+
+			if (_tpl == null || "".equals(_tpl)) {
+				_tpl = "print-template/print.ftl";
+			}
+
+			_tpl = Session.user.get().getWorkspace().getWorkspacePath() + "/"
+					+ _tpl;
+			File _tplFile = new File(_tpl);
+
+			_tplDir = _tplFile.getParentFile();
+			_tplName = _tplFile.getName();
+
+			if (!_tplFile.exists()) {
+
+				// _tplDir = _tplFile.getParentFile();
+
+				if (!_tplDir.exists()) {
+					_tplDir.mkdirs();
+				}
+
+				Resource resource = new ClassPathResource(
+						"seava/j4e/web/ftl/data/print.ftl");
+				FileUtils.copyFile(resource.getFile(), _tplFile);
+
+			}
+
+			Configuration cfg = new Configuration();
+			cfg.setObjectWrapper(ObjectWrapper.DEFAULT_WRAPPER);
+			cfg.setDirectoryForTemplateLoading(_tplDir);
+
+			Map<String, Object> root = new HashMap<String, Object>();
+
+			root.put("printer", new ModelPrinter());
+			root.put("data", data);
+			root.put("filter", filter);
+			root.put("params", params);
+			root.put("client", Session.user.get().getClient());
+
+			Map<String, Object> reportConfig = new HashMap<String, Object>();
+			reportConfig.put(
+					"logo",
+					this.getSettings().getParam(
+							SysParam.CORE_LOGO_URL_REPORT.name()));
+			reportConfig.put("runBy", Session.user.get().getName());
+			reportConfig.put("runAt", new Date());
+			reportConfig.put("title", exportInfo.getTitle());
+			reportConfig.put("orientation", exportInfo.getLayout());
+			reportConfig.put("columns", exportInfo.getColumns());
+			reportConfig.put("filter", exportInfo.getFilter());
+
+			root.put("cfg", reportConfig);
+
+			if (dataFormat.equals(Constants.DATA_FORMAT_HTML)) {
+				response.setContentType("text/html; charset=UTF-8");
+			}
+
+			Template temp = cfg.getTemplate(_tplName);
+			Writer out = new OutputStreamWriter(response.getOutputStream(),
+					response.getCharacterEncoding());
+			temp.process(root, out);
+			out.flush();
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			this.handleException(e, response);
+			return null;
+		} finally {
+			this.finishRequest();
+		}
 
 	}
 
