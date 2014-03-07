@@ -246,7 +246,7 @@ public class AbstractDsWriteController<M, F, P> extends
 
 			List<Object> ids = new ArrayList<Object>();
 			for (M ds : list) {
-				ids.add(((IModelWithId) ds).getId());
+				ids.add(((IModelWithId<?>) ds).getId());
 			}
 			service.deleteByIds(ids);
 

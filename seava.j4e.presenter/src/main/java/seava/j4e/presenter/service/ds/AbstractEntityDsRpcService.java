@@ -61,9 +61,9 @@ public abstract class AbstractEntityDsRpcService<M extends AbstractDsModel<E>, F
 		if (def.getReloadFromEntity()) {
 			if (ds instanceof IModelWithId) {
 				EntityManager em = this.getEntityService().getEntityManager();
-				if (((IModelWithId) ds).getId() != null) {
+				if (((IModelWithId<?>) ds).getId() != null) {
 					E e = (E) em.find(this.getEntityClass(),
-							((IModelWithId) ds).getId());
+							((IModelWithId<?>) ds).getId());
 					this.getConverter().entityToModel(e, ds, em, null);
 				}
 			}
@@ -197,7 +197,7 @@ public abstract class AbstractEntityDsRpcService<M extends AbstractDsModel<E>, F
 		if (def.getReloadFromEntity()) {
 			for (M ds : list) {
 				if (ds instanceof IModelWithId) {
-					Object _id = ((IModelWithId) ds).getId();
+					Object _id = ((IModelWithId<?>) ds).getId();
 					if (_id != null && !"".equals(_id)) {
 						EntityManager em = this.getEntityService()
 								.getEntityManager();

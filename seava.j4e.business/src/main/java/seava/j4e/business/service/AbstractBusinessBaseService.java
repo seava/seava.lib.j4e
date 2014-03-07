@@ -199,9 +199,9 @@ public abstract class AbstractBusinessBaseService extends
 				.send(message);
 	}
 
-	protected List<Object> collectIds(List<? extends IModelWithId> entities) {
+	protected List<Object> collectIds(List<? extends IModelWithId<?>> entities) {
 		List<Object> result = new ArrayList<Object>();
-		for (IModelWithId e : entities) {
+		for (IModelWithId<?> e : entities) {
 			result.add(e.getId());
 		}
 		return result;

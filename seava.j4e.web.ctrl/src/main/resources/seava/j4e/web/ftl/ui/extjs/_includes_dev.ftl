@@ -160,6 +160,8 @@
 	<script type="text/javascript"
 		src="${urlUiExtjsCore}/js/e4e/dc/command/DcReloadRecCommand.js"></script>
 	<script type="text/javascript"
+		src="${urlUiExtjsCore}/js/e4e/dc/command/DcReloadPageCommand.js"></script>		
+	<script type="text/javascript"
 		src="${urlUiExtjsCore}/js/e4e/dc/command/DcPrevRecCommand.js"></script>
 	<script type="text/javascript"
 		src="${urlUiExtjsCore}/js/e4e/dc/command/DcNextRecCommand.js"></script>

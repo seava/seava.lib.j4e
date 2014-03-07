@@ -31,7 +31,6 @@ import seava.j4e.api.descriptor.IDsDefinitions;
 import seava.j4e.api.enums.SysParam;
 import seava.j4e.api.service.presenter.IDsService;
 import seava.j4e.api.session.Session;
-import seava.j4e.commons.SysParams_Core;
 import seava.j4e.presenter.action.impex.ExportInfo;
 import seava.j4e.presenter.action.marshaller.ModelPrinter;
 import seava.j4e.presenter.action.marshaller.XmlMarshaller;

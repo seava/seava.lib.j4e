@@ -143,7 +143,7 @@ public abstract class AbstractPresenterBaseService extends
 		List<Object> result = new ArrayList<Object>();
 		for (Object e : list) {
 			try {
-				result.add(((IModelWithId) e).getId());
+				result.add(((IModelWithId<?>) e).getId());
 			} catch (ClassCastException exc) {
 				// ignore it , go to next in list
 			}

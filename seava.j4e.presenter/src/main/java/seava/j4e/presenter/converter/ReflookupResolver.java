@@ -217,7 +217,7 @@ public class ReflookupResolver<M, E> extends AbstractPresenterBase {
 			 * as the one in the original entity then update it to the new one
 			 */
 			if (ref == null
-					|| !((IModelWithId) ref).getId().equals(refIdDsFieldValue)) {
+					|| !((IModelWithId<?>) ref).getId().equals(refIdDsFieldValue)) {
 				setter.invoke(e, em.find(refClass, refIdDsFieldValue));
 			}
 		} else {
@@ -286,7 +286,7 @@ public class ReflookupResolver<M, E> extends AbstractPresenterBase {
 				Method refIdFieldInDsSetter = this
 						._getDsSetter(refIdDsFieldName);
 				refIdFieldInDsSetter.invoke(ds,
-						((IModelWithId) theReference).getId());
+						((IModelWithId<?>) theReference).getId());
 			} else {
 				setter.invoke(e, (Object) null);
 			}
