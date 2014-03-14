@@ -20,6 +20,7 @@ import seava.j4e.api.annotation.Param;
 import seava.j4e.api.annotation.RefLookup;
 import seava.j4e.api.annotation.RefLookups;
 import seava.j4e.api.exceptions.BusinessException;
+import seava.j4e.api.exceptions.ErrorCode;
 import seava.j4e.api.model.IModelWithId;
 import seava.j4e.presenter.AbstractPresenterBase;
 
@@ -217,7 +218,8 @@ public class ReflookupResolver<M, E> extends AbstractPresenterBase {
 			 * as the one in the original entity then update it to the new one
 			 */
 			if (ref == null
-					|| !((IModelWithId<?>) ref).getId().equals(refIdDsFieldValue)) {
+					|| !((IModelWithId<?>) ref).getId().equals(
+							refIdDsFieldValue)) {
 				setter.invoke(e, em.find(refClass, refIdDsFieldValue));
 			}
 		} else {
@@ -277,10 +279,11 @@ public class ReflookupResolver<M, E> extends AbstractPresenterBase {
 								+ entry.getValue() + "`");
 					}
 
-					throw new BusinessException("Cannot find  `"
-							+ refClass.getSimpleName() + "` reference using "
-							+ sb.toString() + " for data-source `"
-							+ ds.getClass().getSimpleName() + "`");
+					throw new BusinessException(ErrorCode.G_RUNTIME_ERROR,
+							"Cannot find  `" + refClass.getSimpleName()
+									+ "` reference using " + sb.toString()
+									+ " for data-source `"
+									+ ds.getClass().getSimpleName() + "`");
 				}
 				setter.invoke(e, theReference);
 				Method refIdFieldInDsSetter = this

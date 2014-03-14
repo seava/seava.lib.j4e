@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import seava.j4e.api.Constants;
 import seava.j4e.api.exceptions.BusinessException;
+import seava.j4e.api.exceptions.ErrorCode;
 import seava.j4e.api.model.IMessageData;
 import seava.j4e.api.model.IModelWithClientId;
 import seava.j4e.api.model.IModelWithCode;
@@ -68,6 +69,7 @@ public abstract class AbstractEntityWriteService<E> extends
 				this.getEntityManager().persist(e);
 			} else {
 				throw new BusinessException(
+						ErrorCode.G_CLIENT_MISMATCH,
 						"You are trying to insert an object into a different client as your current client.");
 			}
 		} else {
@@ -119,8 +121,9 @@ public abstract class AbstractEntityWriteService<E> extends
 	@Transactional
 	public void insert(List<E> list) throws BusinessException {
 		if (this.noInsert) {
-			throw new BusinessException("Insert not allowed for type "
-					+ this.getEntityClass().getCanonicalName());
+			throw new BusinessException(ErrorCode.G_INSERT_NOT_ALLOWED,
+					"Insert not allowed for type "
+							+ this.getEntityClass().getCanonicalName());
 		}
 		this.preInsert(list);
 		this.onInsert(list);
@@ -166,6 +169,7 @@ public abstract class AbstractEntityWriteService<E> extends
 				this.getEntityManager().merge(e);
 			} else {
 				throw new BusinessException(
+						ErrorCode.G_CLIENT_MISMATCH,
 						"You are trying to update an object which doesn't belong to your current client.");
 			}
 		} else {
@@ -217,8 +221,9 @@ public abstract class AbstractEntityWriteService<E> extends
 	@Transactional
 	public void update(List<E> list) throws BusinessException {
 		if (this.noUpdate) {
-			throw new BusinessException("Update not allowed for type "
-					+ this.getEntityClass().getCanonicalName());
+			throw new BusinessException(ErrorCode.G_UPDATE_NOT_ALLOWED,
+					"Update not allowed for type "
+							+ this.getEntityClass().getCanonicalName());
 		}
 		this.preUpdate(list);
 		this.onUpdate(list);
@@ -282,6 +287,7 @@ public abstract class AbstractEntityWriteService<E> extends
 				this.getEntityManager().remove(e);
 			} else {
 				throw new BusinessException(
+						ErrorCode.G_CLIENT_MISMATCH,
 						"You are trying to delete an object which doesn't belong to your current client.");
 			}
 		}
@@ -331,8 +337,9 @@ public abstract class AbstractEntityWriteService<E> extends
 	@Transactional
 	public void delete(List<E> list) throws BusinessException {
 		if (this.noDelete) {
-			throw new BusinessException("Delete not allowed for type "
-					+ this.getEntityClass().getCanonicalName());
+			throw new BusinessException(ErrorCode.G_DELETE_NOT_ALLOWED,
+					"Delete not allowed for type "
+							+ this.getEntityClass().getCanonicalName());
 		}
 		this.preDelete(list);
 		this.onDelete(list);
@@ -440,14 +447,15 @@ public abstract class AbstractEntityWriteService<E> extends
 	protected void code_allocation(IModelWithCode e, boolean isInsert)
 			throws BusinessException {
 		if (e.getName() == null || "".equals(e.getName())) {
-			throw new BusinessException("Specify the name, it cannot be empty.");
+			throw new BusinessException(ErrorCode.G_NULL_FIELD_NAME,
+					"Specify the name, it cannot be empty.");
 		}
 		if (e.getCode() == null || "".equals(e.getCode())) {
 			if (e._code_allocation_mode() == Constants.ENTITY_CODE_DERIVED) {
 				// TODO: allow a customizable transformer.
 				e.setCode(e.getName().replaceAll(" ", "_").toUpperCase());
 			} else if (e._code_allocation_mode() == Constants.ENTITY_CODE_MANUAL) {
-				throw new BusinessException(
+				throw new BusinessException(ErrorCode.G_NULL_FIELD_CODE,
 						"Specify a code for record with name `" + e.getName()
 								+ "`");
 			}

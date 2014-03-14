@@ -9,47 +9,29 @@ public class BusinessException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	private String errorCode;
+	private IErrorCode errorCode;
 	private String errorDetails;
 
-	public BusinessException(String errorCode) {
-		super(errorCode);
-		this.errorCode = errorCode;
-	}
-
-	public BusinessException(String errorCode, String errorDetails) {
-		super(errorCode + " \n" + errorDetails);
+	public BusinessException(IErrorCode errorCode, String errorDetails) {
+		super(errorDetails);
 		this.errorCode = errorCode;
 		this.errorDetails = errorDetails;
 	}
 
-	public BusinessException(String errorCode, Throwable exception) {
-		super(errorCode);
+	public BusinessException(IErrorCode errorCode, Throwable exception) {
+		this.errorCode = errorCode;
 		this.initCause(exception);
 	}
 
-	public BusinessException(String errorCode, String errorDetails,
+	public BusinessException(IErrorCode errorCode, String errorDetails,
 			Throwable exception) {
-		super(errorCode + " \n" + errorDetails);
 		this.initCause(exception);
 		this.errorCode = errorCode;
 		this.errorDetails = errorDetails;
 	}
 
-	public String getErrorCode() {
+	public IErrorCode getErrorCode() {
 		return errorCode;
-	}
-
-	public void setErrorCode(String errorCode) {
-		this.errorCode = errorCode;
-	}
-
-	public String getErrorDetails() {
-		return errorDetails;
-	}
-
-	public void setErrorDetails(String errorDetails) {
-		this.errorDetails = errorDetails;
 	}
 
 }

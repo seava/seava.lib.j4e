@@ -18,6 +18,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.util.Assert;
 
 import seava.j4e.api.exceptions.BusinessException;
+import seava.j4e.api.exceptions.ErrorCode;
 import seava.j4e.api.model.IModelWithClientId;
 import seava.j4e.api.session.Session;
 import seava.j4e.business.service.AbstractBusinessBaseService;
@@ -42,8 +43,9 @@ public abstract class AbstractEntityReadService<E> extends
 		try {
 			return this.getEntityClass().newInstance();
 		} catch (Exception e) {
-			throw new BusinessException("Cannot create a new instance of "
-					+ this.getEntityClass().getCanonicalName(), e);
+			throw new BusinessException(ErrorCode.G_RUNTIME_ERROR,
+					"Cannot create a new instance of "
+							+ this.getEntityClass().getCanonicalName(), e);
 		}
 	}
 

@@ -9,6 +9,7 @@ import java.util.List;
 
 import seava.j4e.api.Constants;
 import seava.j4e.api.exceptions.BusinessException;
+import seava.j4e.api.exceptions.ErrorCode;
 import seava.j4e.api.service.business.IEntityService;
 import seava.j4e.api.service.business.IEntityServiceFactory;
 
@@ -62,8 +63,8 @@ public class ServiceLocatorBusiness implements ApplicationContextAware {
 				// service not found in this factory, ignore
 			}
 		}
-		throw new BusinessException(entityClass.getSimpleName() + "Service"
-				+ " not found ");
+		throw new BusinessException(ErrorCode.G_RUNTIME_ERROR,
+				entityClass.getSimpleName() + "Service" + " not found ");
 	}
 
 	/**

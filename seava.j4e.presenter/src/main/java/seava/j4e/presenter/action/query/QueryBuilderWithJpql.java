@@ -320,14 +320,23 @@ public class QueryBuilderWithJpql<M, F, P> extends
 		String key = filterRule.getFieldName() + "_" + cnt;
 		addFilterCondition(entityAlias + "." + source + " "
 				+ filterRule.getOperation() + " :" + key);
+
 		String op = filterRule.getOperation();
+
 		if (op.equals(OP_IN) || op.equals(OP_NOT_IN)) {
+
 			String[] inVals = filterRule.getValue1().split(",");
 			this.defaultFilterItems.put(key, Arrays.asList(inVals));
-		} else {
-			this.defaultFilterItems.put(key, filterRule.getConvertedValue1());
-		}
 
+		} else if (op.equals(OP_LIKE) || op.equals(OP_NOT_LIKE)) {
+
+			this.defaultFilterItems.put(key, filterRule.getValue1());
+
+		} else {
+
+			this.defaultFilterItems.put(key, filterRule.getConvertedValue1());
+
+		}
 	}
 
 	private void appendFilterRule2(String source, FilterRule filterRule, int cnt)
@@ -469,9 +478,13 @@ public class QueryBuilderWithJpql<M, F, P> extends
 								}
 								// add the value anyway , maybe it is used in
 								// the ds-level where clause.
-								// If there is no field-level filter condition, the field is not mapped to an entity field, 
-								// and there is no filter condition at data-source level to use this field as parameter
-								// it should be forced to null anywhere in pre-query phase.
+								// If there is no field-level filter condition,
+								// the field is not mapped to an entity field,
+								// and there is no filter condition at
+								// data-source level to use this field as
+								// parameter
+								// it should be forced to null anywhere in
+								// pre-query phase.
 								this.defaultFilterItems.put(fieldName,
 										(String) fv);
 							} else {
@@ -541,10 +554,10 @@ public class QueryBuilderWithJpql<M, F, P> extends
 					} else {
 						q.setParameter(key, value);
 					}
-				} catch(IllegalArgumentException e) {
+				} catch (IllegalArgumentException e) {
 					if (logger.isDebugEnabled()) {
 						logger.debug(e.getMessage());
-					}					
+					}
 				}
 			}
 		}

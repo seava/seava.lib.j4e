@@ -54,7 +54,7 @@
 		if (document && document.getElementById("n21-loading-msg")) {
 			document.getElementById("n21-loading-msg").innerHTML = Main
 					.translate("msg", "initialize")
-					+ " ${item}...";
+					+ " ${itemSimpleName}...";
 		}
 	</script>
 
@@ -195,7 +195,8 @@
 		});
 
 	<#include "_loading_mask_remove.ftl">
-		
+	
+
 	</script>
 </body>
 </html>

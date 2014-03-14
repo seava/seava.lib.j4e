@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
 
 import seava.j4e.api.ISettings;
 import seava.j4e.api.exceptions.BusinessException;
+import seava.j4e.api.exceptions.ErrorCode;
 import seava.j4e.api.model.IModelWithId;
 import seava.j4e.api.service.business.IEntityService;
 import seava.j4e.api.wf.IActivitiProcessEngineHolder;
@@ -79,8 +80,9 @@ public abstract class AbstractBusinessBaseService extends
 		try {
 			delegate = clazz.newInstance();
 		} catch (Exception e) {
-			throw new BusinessException("Cannot create a new instance of  "
-					+ clazz.getCanonicalName(), e);
+			throw new BusinessException(ErrorCode.G_RUNTIME_ERROR,
+					"Cannot create a new instance of  "
+							+ clazz.getCanonicalName(), e);
 		}
 		delegate.setApplicationContext(this.getApplicationContext());
 		delegate.setEntityManager(this.getEntityManager());
@@ -144,7 +146,7 @@ public abstract class AbstractBusinessBaseService extends
 						.getBean(IActivitiProcessEngineHolder.class)
 						.getProcessEngine();
 			} catch (Exception e) {
-				throw new BusinessException(
+				throw new BusinessException(ErrorCode.G_RUNTIME_ERROR,
 						"Cannot get the Activiti workflow engine.", e);
 			}
 		}

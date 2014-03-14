@@ -249,12 +249,12 @@
 
     <#include "_loading_mask_remove.ftl">
 
-    var dont_confirm_leave = 0;
+    var confirm_leave = true;
     var leave_message = "Are you sure you want to leave?"
     function _leave_page(e) {
-            if(dont_confirm_leave!==1)
+            if( confirm_leave ===true)
             {
-                if(!e) e = window.event;                
+                if(!e) e = window.event;
                 e.cancelBubble = true;
                 e.returnValue = leave_message;
                 if (e.stopPropagation) 
