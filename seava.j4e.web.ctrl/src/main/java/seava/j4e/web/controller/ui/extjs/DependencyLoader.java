@@ -217,8 +217,8 @@ public class DependencyLoader {
 					});
 
 		} catch (HttpResponseException e) {
-			if (e.getStatusCode() != 404) {
-				logger.error("Cannot find dependencies for component " + cmp
+			if (e.getStatusCode() == 404) {
+				logger.warn("Cannot find dependencies for component " + cmp
 						+ " at " + url);
 			} else {
 				e.printStackTrace();
