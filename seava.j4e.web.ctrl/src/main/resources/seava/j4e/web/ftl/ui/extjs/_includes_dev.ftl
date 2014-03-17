@@ -142,6 +142,10 @@
 	<script type="text/javascript"
 		src="${urlUiExtjsCore}/js/e4e/dc/command/DcQueryCommand.js"></script>
 	<script type="text/javascript"
+		src="${urlUiExtjsCore}/js/e4e/dc/command/DcClearQueryCommand.js"></script>
+	<script type="text/javascript"
+		src="${urlUiExtjsCore}/js/e4e/dc/command/DcEnterQueryCommand.js"></script>	
+	<script type="text/javascript"
 		src="${urlUiExtjsCore}/js/e4e/dc/command/DcNewCommand.js"></script>
 	<script type="text/javascript"
 		src="${urlUiExtjsCore}/js/e4e/dc/command/DcCopyCommand.js"></script>
@@ -153,8 +157,6 @@
 		src="${urlUiExtjsCore}/js/e4e/dc/command/DcEditInCommand.js"></script>
 	<script type="text/javascript"
 		src="${urlUiExtjsCore}/js/e4e/dc/command/DcEditOutCommand.js"></script>
-	<script type="text/javascript"
-		src="${urlUiExtjsCore}/js/e4e/dc/command/DcClearQueryCommand.js"></script>
 	<script type="text/javascript"
 		src="${urlUiExtjsCore}/js/e4e/dc/command/DcDeleteCommand.js"></script>
 	<script type="text/javascript"
