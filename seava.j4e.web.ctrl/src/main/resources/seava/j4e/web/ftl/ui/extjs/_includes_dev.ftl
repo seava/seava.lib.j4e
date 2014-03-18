@@ -177,6 +177,8 @@
 	<!-- dc-tools -->
 	
 	<script type="text/javascript"
+		src="${urlUiExtjsCore}/js/e4e/dc/tools/DcReport.js"></script>
+	<script type="text/javascript"
 		src="${urlUiExtjsCore}/js/e4e/dc/tools/DcBulkEditWindow.js"></script>
 	<script type="text/javascript"
 		src="${urlUiExtjsCore}/js/e4e/dc/tools/DcImportWindow.js"></script>
