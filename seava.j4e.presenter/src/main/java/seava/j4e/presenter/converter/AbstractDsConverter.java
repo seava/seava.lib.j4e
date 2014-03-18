@@ -24,6 +24,7 @@ import seava.j4e.api.action.result.IDsConverter;
 import seava.j4e.api.annotation.RefLookups;
 import seava.j4e.presenter.AbstractPresenterBase;
 import seava.j4e.presenter.descriptor.DsDescriptor;
+import seava.j4e.presenter.model.AbstractDsModel;
 
 public abstract class AbstractDsConverter<M, E> extends AbstractPresenterBase
 		implements IDsConverter<M, E> {
@@ -75,6 +76,9 @@ public abstract class AbstractDsConverter<M, E> extends AbstractPresenterBase
 		Map<String, String> refpaths = this.descriptor.getE2mConv();
 		for (E e : entities) {
 			M m = modelClass.newInstance();
+			if (m instanceof AbstractDsModel<?>) {
+				((AbstractDsModel) m)._setEntity_(e);
+			}
 			this.entityToModel_(e, m, em, setters, refpaths);
 			result.add(m);
 		}
