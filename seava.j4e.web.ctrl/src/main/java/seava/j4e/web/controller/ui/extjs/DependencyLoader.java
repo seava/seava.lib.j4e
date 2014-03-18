@@ -68,12 +68,10 @@ public class DependencyLoader {
 	 */
 	public void packFrameTrl(String bundle, String name, String language,
 			File file) throws Exception {
-
 		List<String> list = new ArrayList<String>();
 		this.resolveFrameDependencies(bundle, name, language, null, list);
 		Writer writer = new BufferedWriter(new OutputStreamWriter(
 				new FileOutputStream(file), "ISO-8859-1"));
-
 		try {
 			for (String dep : list) {
 				this.writeContentTrl(dep, language, writer);
@@ -153,8 +151,17 @@ public class DependencyLoader {
 
 		if (d.getDc() != null) {
 			for (String dep : d.getDc()) {
+
+				String[] tokens = dep.split("/");
+				String _bundle = tokens[0];
+				String _type = tokens[1];
+				String _name = tokens[2];
+
 				if (listCmp != null) {
-					listCmp.add(urlCmp(dep));
+					listCmp.add(urlCmp(_bundle, _type, _name));
+				}
+				if (listTrl != null) {
+					listTrl.add(urlTrl(_bundle, _type, _name, language));
 				}
 			}
 		}
