@@ -43,14 +43,6 @@
 			<artifactId>com.springsource.freemarker</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>com.springsource.org.codehaus.jackson</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>com.springsource.org.codehaus.jackson.mapper</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.junit</groupId>
 			<artifactId>com.springsource.org.junit</artifactId>
 			<scope>test</scope>
@@ -66,6 +58,14 @@
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.persistence</groupId>

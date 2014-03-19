@@ -26,7 +26,8 @@ import seava.j4e.presenter.action.impex.ExportInfo;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.SerializationConfig;
-import org.codehaus.jackson.map.type.TypeFactory;
+import org.codehaus.jackson.type.JavaType;
+import org.codehaus.jackson.type.TypeReference;
 
 public class JsonMarshaller<M, F, P> extends AbstractMarshaller<M, F, P>
 		implements IDsMarshaller<M, F, P> {
@@ -49,12 +50,16 @@ public class JsonMarshaller<M, F, P> extends AbstractMarshaller<M, F, P>
 				.configure(
 						DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES,
 						false);
+		this.mapper
+				.configure(
+						DeserializationConfig.Feature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT,
+						false);
 
 		SimpleDateFormat sdf = new SimpleDateFormat(
 				Constants.get_server_datetime_format());
 
-		this.mapper.getDeserializationConfig().setDateFormat(sdf);
-		this.mapper.getSerializationConfig().setDateFormat(sdf);
+		this.mapper.setDateFormat(sdf);
+		this.mapper.setDateFormat(sdf);
 	}
 
 	@Override
@@ -65,13 +70,15 @@ public class JsonMarshaller<M, F, P> extends AbstractMarshaller<M, F, P>
 	@Override
 	public List<ISortToken> readSortTokens(String source) throws Exception {
 		return this.mapper.readValue(source,
-				TypeFactory.collectionType(List.class, SortToken.class));
+				new TypeReference<List<SortToken>>() {
+				});
 	}
 
 	@Override
 	public List<IFilterRule> readFilterRules(String source) throws Exception {
 		return this.mapper.readValue(source,
-				TypeFactory.collectionType(List.class, FilterRule.class));
+				new TypeReference<List<FilterRule>>() {
+				});
 	}
 
 	@Override
@@ -87,8 +94,9 @@ public class JsonMarshaller<M, F, P> extends AbstractMarshaller<M, F, P>
 
 	@Override
 	public List<M> readListFromString(String source) throws Exception {
-		return this.mapper.readValue(source,
-				TypeFactory.collectionType(List.class, getModelClass()));
+		JavaType type = mapper.getTypeFactory().constructCollectionType(
+				List.class, this.getModelClass());
+		return this.mapper.readValue(source, type);
 	}
 
 	@Override
@@ -108,8 +116,8 @@ public class JsonMarshaller<M, F, P> extends AbstractMarshaller<M, F, P>
 	@Override
 	public <T> List<T> readListFromString(String source, Class<T> type)
 			throws Exception {
-		return this.mapper.readValue(source,
-				TypeFactory.collectionType(List.class, type));
+		return this.mapper.readValue(source, new TypeReference<List<T>>() {
+		});
 	}
 
 	@Override
