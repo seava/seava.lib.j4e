@@ -5,9 +5,7 @@
  */
 package seava.j4e.web.controller.data;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -31,6 +29,7 @@ import seava.j4e.api.action.result.IDsMarshaller;
 import seava.j4e.api.descriptor.IDsDefinition;
 import seava.j4e.api.descriptor.IDsDefinitions;
 import seava.j4e.api.enums.SysParam;
+import seava.j4e.api.exceptions.ErrorCode;
 import seava.j4e.api.service.presenter.IDsService;
 import seava.j4e.api.session.Session;
 import seava.j4e.presenter.action.impex.ExportInfo;
@@ -169,7 +168,8 @@ public class AbstractDsReadController<M, F, P> extends
 
 			return out;
 		} catch (Exception e) {
-			return this.handleException(e, response);
+			return this.handleManagedException(ErrorCode.DB_QUERY_ERROR, e,
+					response);
 		} finally {
 			this.finishRequest();
 		}

@@ -79,6 +79,8 @@ public abstract class AbstractUiExtjsController extends AbstractBaseController {
 
 		String userRolesStr = null;
 
+		this.prepareRequest(request, response);
+
 		try {
 			ISessionUser su = (ISessionUser) SecurityContextHolder.getContext()
 					.getAuthentication().getPrincipal();

@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import seava.j4e.api.Constants;
 import seava.j4e.api.enums.SysParam;
+import seava.j4e.api.exceptions.BusinessException;
+import seava.j4e.api.exceptions.ErrorCode;
 import seava.j4e.api.exceptions.NotAuthorizedRequestException;
 import seava.j4e.api.session.ISessionUser;
 
@@ -49,85 +51,92 @@ public class UiExtjsFrameController extends AbstractUiExtjsController {
 			throws Exception {
 
 		try {
-			@SuppressWarnings("unused")
-			ISessionUser su = (ISessionUser) SecurityContextHolder.getContext()
-					.getAuthentication().getPrincipal();
-		} catch (java.lang.ClassCastException e) {
-			throw new NotAuthorizedRequestException("Not authenticated");
-		}
+			try {
+				@SuppressWarnings("unused")
+				ISessionUser su = (ISessionUser) SecurityContextHolder
+						.getContext().getAuthentication().getPrincipal();
+			} catch (java.lang.ClassCastException e) {
+				throw new BusinessException(ErrorCode.SEC_NOT_AUTHENTICATED,
+						"Not authenticated");
+			}
 
-		Map<String, Object> model = new HashMap<String, Object>();
-		this._prepare(model, request, response);
+			Map<String, Object> model = new HashMap<String, Object>();
+			this._prepare(model, request, response);
 
-		String[] tmp = request.getPathInfo().split("/");
-		String frameFQN = tmp[tmp.length - 1];
-		String bundle = tmp[tmp.length - 2];
-		String[] t = frameFQN.split("\\.");
-		String frameName = t[t.length - 1];
+			String[] tmp = request.getPathInfo().split("/");
+			String frameFQN = tmp[tmp.length - 1];
+			String bundle = tmp[tmp.length - 2];
+			String[] t = frameFQN.split("\\.");
+			String frameName = t[t.length - 1];
 
-		model.put("item", frameFQN);
-		model.put("itemSimpleName", frameName);
-		model.put("bundle", bundle);
+			model.put("item", frameFQN);
+			model.put("itemSimpleName", frameName);
+			model.put("bundle", bundle);
 
-		// get extensions
-		model.put("extensions",
-				getExtensionFiles(frameFQN, uiExtjsSettings.getUrlModules()));
+			// get extensions
+			model.put(
+					"extensions",
+					getExtensionFiles(frameFQN, uiExtjsSettings.getUrlModules()));
 
-		model.put("extensionsContent", getExtensionContent(frameFQN));
+			model.put("extensionsContent", getExtensionContent(frameFQN));
 
-		String logo = this.getSettings().getParam(
-				SysParam.CORE_LOGO_URL_EXTJS.name());
+			String logo = this.getSettings().getParam(
+					SysParam.CORE_LOGO_URL_EXTJS.name());
 
-		if (logo != null && !logo.equals("")) {
-			model.put("logo", logo);
-		}
+			if (logo != null && !logo.equals("")) {
+				model.put("logo", logo);
+			}
 
-		if (Constants.PROP_WORKING_MODE_DEV.equalsIgnoreCase(this.getSettings()
-				.get(Constants.PROP_WORKING_MODE))) {
+			if (Constants.PROP_WORKING_MODE_DEV.equalsIgnoreCase(this
+					.getSettings().get(Constants.PROP_WORKING_MODE))) {
 
-			List<String> listCmp = new ArrayList<String>();
-			List<String> listTrl = new ArrayList<String>();
+				List<String> listCmp = new ArrayList<String>();
+				List<String> listTrl = new ArrayList<String>();
 
-			DependencyLoader loader = this.getDependencyLoader();
-			loader.resolveFrameDependencies(bundle, frameFQN,
-					(String) model.get("shortLanguage"), listCmp, listTrl);
+				DependencyLoader loader = this.getDependencyLoader();
+				loader.resolveFrameDependencies(bundle, frameFQN,
+						(String) model.get("shortLanguage"), listCmp, listTrl);
 
-			model.put("frameDependenciesCmp", listCmp);
-			model.put("frameDependenciesTrl", listTrl);
+				model.put("frameDependenciesCmp", listCmp);
+				model.put("frameDependenciesTrl", listTrl);
 
-		} else {
-			if (this.cacheFolderWritable == null) {
-				synchronized (this) {
-					if (this.cacheFolderWritable == null) {
+			} else {
+				if (this.cacheFolderWritable == null) {
+					synchronized (this) {
+						if (this.cacheFolderWritable == null) {
 
-						if (this.cacheFolder == null) {
-							this.cacheFolder = this.getUiExtjsSettings()
-									.getCacheFolder();
-						}
+							if (this.cacheFolder == null) {
+								this.cacheFolder = this.getUiExtjsSettings()
+										.getCacheFolder();
+							}
 
-						File cf = new File(this.cacheFolder);
-						if (!cf.exists()) {
+							File cf = new File(this.cacheFolder);
+							if (!cf.exists()) {
 
-							if (!cf.mkdirs()) {
+								if (!cf.mkdirs()) {
+									throw new Exception(
+											"Cache folder "
+													+ this.cacheFolder
+													+ " does not exist and could not be created.");
+								}
+							}
+
+							if (!cf.isDirectory() || !cf.canWrite()) {
 								throw new Exception(
 										"Cache folder "
 												+ this.cacheFolder
-												+ " does not exist and could not be created.");
+												+ " is not writeable. Cannot pack and cache the frame dependencies for the configured `prod` working mode. ");
 							}
+							this.cacheFolderWritable = true;
 						}
-
-						if (!cf.isDirectory() || !cf.canWrite()) {
-							throw new Exception(
-									"Cache folder "
-											+ this.cacheFolder
-											+ " is not writeable. Cannot pack and cache the frame dependencies for the configured `prod` working mode. ");
-						}
-						this.cacheFolderWritable = true;
 					}
 				}
 			}
+			return new ModelAndView(this.viewName, model);
+		} catch (Exception e) {
+			this.handleManagedExceptionAsHtml(null, e, response);
+			return null;
 		}
-		return new ModelAndView(this.viewName, model);
 	}
 
 	/**

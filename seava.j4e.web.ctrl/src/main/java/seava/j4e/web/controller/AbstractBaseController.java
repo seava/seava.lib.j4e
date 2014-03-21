@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import seava.j4e.api.ISettings;
 import seava.j4e.api.enums.SysParam;
+import seava.j4e.api.exceptions.BusinessException;
+import seava.j4e.api.exceptions.ErrorCode;
+import seava.j4e.api.exceptions.IErrorCode;
 import seava.j4e.api.exceptions.NotAuthorizedRequestException;
 import seava.j4e.api.security.IAuthorizationFactory;
 import seava.j4e.api.service.IServiceLocator;
@@ -83,7 +86,8 @@ public abstract class AbstractBaseController implements ApplicationContextAware 
 					.getAuthentication().getPrincipal();
 
 			if (sessionUser.isSessionLocked()) {
-				throw new Exception("Session has been locked. ");
+				throw new BusinessException(ErrorCode.SEC_SESSION_LOCKED,
+						"Session has been locked.");
 			}
 			user = sessionUser.getUser();
 			if (logger.isDebugEnabled()) {
@@ -93,8 +97,9 @@ public abstract class AbstractBaseController implements ApplicationContextAware 
 			if (logger.isDebugEnabled()) {
 				logger.debug("Not authenticated request denied.");
 			}
-			throw new Exception("<b>Session expired.</b>"
-					+ "<br> Logout from application and login again.");
+			throw new BusinessException(ErrorCode.SEC_SESSION_EXPIRED,
+					"<b>Session expired.</b>"
+							+ "<br> Logout from application and login again.");
 		}
 
 		Session.user.set(user);
@@ -107,11 +112,18 @@ public abstract class AbstractBaseController implements ApplicationContextAware 
 				logger.debug(SysParam.CORE_SESSION_CHECK_IP.name()
 						+ " enabled, checking IP against login IP...");
 			}
-			String ip = request.getRemoteAddr();
+			String ip = request.getHeader("X-Forwarded-For");
+			if (ip != null && !"".equals(ip)) {
+				ip = ip.substring(0, ip.indexOf(","));
+			} else {
+				ip = request.getRemoteAddr();
+			}
+
 			if (!sessionUser.getRemoteIp().equals(ip)) {
 				logger.debug("Request comes from different IP as expected. Expected: "
 						+ sessionUser.getRemoteIp() + ", real " + ip);
-				throw new Exception(
+				throw new BusinessException(
+						ErrorCode.SEC_DIFFERENT_IP,
 						"Security settings do not allow to process request. Check log file for details.");
 			}
 		}
@@ -128,7 +140,8 @@ public abstract class AbstractBaseController implements ApplicationContextAware 
 			if (!sessionUser.getUserAgent().equals(agent)) {
 				logger.debug("Request comes from different user-agent as expected. Expected: "
 						+ sessionUser.getUserAgent() + ", real " + agent);
-				throw new Exception(
+				throw new BusinessException(
+						ErrorCode.SEC_DIFFERENT_USER_AGENT,
 						"Security settings do not allow to process request. Check log file for details.");
 			}
 		}
@@ -223,27 +236,6 @@ public abstract class AbstractBaseController implements ApplicationContextAware 
 	/* ================ EXCEPTIONS ======================== */
 
 	/**
-	 * Not authenticated
-	 * 
-	 * @param e
-	 * @param response
-	 * @return
-	 * @throws IOException
-	 */
-	@ExceptionHandler(value = NotAuthorizedRequestException.class)
-	@ResponseBody
-	protected String handleException(NotAuthorizedRequestException e,
-			HttpServletResponse response) throws IOException {
-		response.setStatus(403);
-		if (e.getCause() != null) {
-			response.getOutputStream().print(e.getCause().getMessage());
-		} else {
-			response.getOutputStream().print(e.getMessage());
-		}
-		return null;
-	}
-
-	/**
 	 * Generic exception handler
 	 * 
 	 * @param e
@@ -258,34 +250,7 @@ public abstract class AbstractBaseController implements ApplicationContextAware 
 
 		e.printStackTrace();
 
-		if (e instanceof NotAuthorizedRequestException) {
-			return this.handleException((NotAuthorizedRequestException) e,
-					response);
-		} else if (e instanceof InvocationTargetException) {
-			StringBuffer sb = new StringBuffer();
-			if (e.getMessage() != null) {
-				sb.append(e.getMessage() + "\n");
-			}
-			Throwable exc = ((InvocationTargetException) e)
-					.getTargetException();
-
-			if (exc.getMessage() != null) {
-				sb.append(exc.getMessage() + "\n");
-			}
-
-			if (exc.getCause() != null) {
-				if (sb.length() > 0) {
-					sb.append(" Reason: ");
-				}
-				sb.append(exc.getCause().getLocalizedMessage());
-			}
-
-			exc.printStackTrace();
-			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-			response.getOutputStream().print(sb.toString());
-			return null;
-		}
-		StringBuffer sb = new StringBuffer();
+		StringBuffer sb = new StringBuffer(" NOT MANAGED EXCEPTION HANDLER ");
 		if (e.getLocalizedMessage() != null) {
 			sb.append(e.getLocalizedMessage());
 		} else if (e.getCause() != null) {
@@ -306,6 +271,136 @@ public abstract class AbstractBaseController implements ApplicationContextAware 
 		response.getOutputStream().flush();
 		return null;
 
+	}
+
+	protected String handleManagedExceptionAsText(IErrorCode errorCode,
+			Exception e, HttpServletResponse response) throws IOException {
+		return this.handleManagedException(errorCode, e, response, "txt");
+	}
+
+	protected String handleManagedExceptionAsHtml(IErrorCode errorCode,
+			Exception e, HttpServletResponse response) throws IOException {
+		return this.handleManagedException(errorCode, e, response, "html");
+	}
+
+	protected String handleManagedExceptionAsJson(IErrorCode errorCode,
+			Exception e, HttpServletResponse response) throws IOException {
+		return this.handleManagedException(errorCode, e, response, "json");
+	}
+
+	protected String handleManagedException(IErrorCode errorCode, Exception e,
+			HttpServletResponse response) throws IOException {
+		return this.handleManagedException(errorCode, e, response, "txt");
+	}
+
+	/**
+	 * Exception
+	 * 
+	 * @param e
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
+	@ResponseBody
+	protected String handleManagedException(IErrorCode errorCode, Exception e,
+			HttpServletResponse response, String outputType) throws IOException {
+
+		IErrorCode err = errorCode;
+		Map<String, String> result = new HashMap<String, String>();
+
+		if (!(e instanceof BusinessException)) {
+			e.printStackTrace();
+		}
+		if (err == null) {
+			err = ErrorCode.G_RUNTIME_ERROR;
+		}
+
+		// if (e instanceof BusinessException) {
+		// err = ((BusinessException) e).getErrorCode();
+		// } else {
+		// if (e.getCause() != null) {
+		// Throwable t = e;
+		// while (t.getCause() != null) {
+		// t = t.getCause();
+		// if (t instanceof BusinessException) {
+		// err = ((BusinessException) t).getErrorCode();
+		// break;
+		// }
+		// }
+		// }
+		// }
+
+		result.put("err_group", err.getErrGroup());
+		result.put("err_no", err.getErrNo() + "");
+		result.put("err_msg", err.getErrMsg());
+
+		// --------------------
+
+		if (e.getCause() != null) {
+			Throwable t = e;
+			while (t.getCause() != null) {
+				t = t.getCause();
+			}
+
+			if (t instanceof SQLException) {
+				SQLException sqlException = (SQLException) t;
+				result.put(
+						"msg",
+						sqlException.getErrorCode() + " - "
+								+ sqlException.getSQLState() + " - "
+								+ sqlException.getLocalizedMessage());
+
+			} else {
+				result.put("msg", t.getMessage());
+			}
+
+		}
+
+		// ---------------------
+
+		if (!result.containsKey("msg")) {
+			result.put("msg", e.getMessage());
+		} else {
+			result.put("details", e.getMessage());
+		}
+
+		StringBuffer sb = new StringBuffer();
+
+		if (outputType.matches("txt")) {
+			sb.append(result.get("err_group") + "-" + result.get("err_no")
+					+ "\n||\n");
+			sb.append(result.get("err_msg") + "\n||\n");
+			sb.append(result.get("msg") + "\n||\n");
+			sb.append(result.get("details") + "\n||\n");
+		} else if (outputType.matches("html")) {
+			sb.append("<html><body><div>" + result.get("msg")
+					+ "</div></body></html>");
+		}
+
+		response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		response.getOutputStream().print(sb.toString());
+		return null;
+	}
+
+	/**
+	 * Not authenticated
+	 * 
+	 * @param e
+	 * @param response
+	 * @return
+	 * @throws IOException
+	 */
+	@ResponseBody
+	protected String handleNotAuthorizedRequestException(
+			NotAuthorizedRequestException e, HttpServletResponse response)
+			throws IOException {
+		response.setStatus(403);
+		if (e.getCause() != null) {
+			response.getOutputStream().print(e.getCause().getMessage());
+		} else {
+			response.getOutputStream().print(e.getMessage());
+		}
+		return null;
 	}
 
 	/* ================= GETTERS - SETTERS ================== */

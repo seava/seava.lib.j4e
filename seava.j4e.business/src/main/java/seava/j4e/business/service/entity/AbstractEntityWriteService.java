@@ -75,6 +75,7 @@ public abstract class AbstractEntityWriteService<E> extends
 		} else {
 			this.getEntityManager().persist(e);
 		}
+
 	}
 
 	/**

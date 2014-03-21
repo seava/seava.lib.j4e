@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import seava.j4e.api.Constants;
 import seava.j4e.api.descriptor.IUploadedFileDescriptor;
+import seava.j4e.api.exceptions.BusinessException;
+import seava.j4e.api.exceptions.ErrorCode;
 import seava.j4e.api.service.IFileUploadService;
 import seava.j4e.api.service.IFileUploadServiceFactory;
 import seava.j4e.web.controller.AbstractBaseController;
@@ -44,8 +46,8 @@ public class FileUploadController extends AbstractBaseController {
 	 * 
 	 * @param handler
 	 *            spring bean alias of the
-	 *            {@link seava.j4e.api.service.IFileUploadService} which
-	 *            should process the uploaded file
+	 *            {@link seava.j4e.api.service.IFileUploadService} which should
+	 *            process the uploaded file
 	 * @param file
 	 *            Uploaded file
 	 * @param request
@@ -60,36 +62,43 @@ public class FileUploadController extends AbstractBaseController {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
 
-		if (logger.isInfoEnabled()) {
-			logger.info("Processing file upload request with-handler {} ",
-					new Object[] { handler });
+		try {
+			if (logger.isInfoEnabled()) {
+				logger.info("Processing file upload request with-handler {} ",
+						new Object[] { handler });
+			}
+
+			if (file.isEmpty()) {
+				throw new BusinessException(ErrorCode.G_FILE_NOT_UPLOADED,
+						"Upload was not succesful. Try again please.");
+			}
+
+			this.prepareRequest(request, response);
+
+			IFileUploadService srv = this.getFileUploadService(handler);
+			Map<String, String> paramValues = new HashMap<String, String>();
+
+			for (String p : srv.getParamNames()) {
+				paramValues.put(p, request.getParameter(p));
+			}
+
+			IUploadedFileDescriptor fileDescriptor = new UploadedFileDescriptor();
+			fileDescriptor.setContentType(file.getContentType());
+			fileDescriptor.setOriginalName(file.getOriginalFilename());
+			fileDescriptor.setNewName(file.getName());
+			fileDescriptor.setSize(file.getSize());
+			Map<String, Object> result = srv.execute(fileDescriptor,
+					file.getInputStream(), paramValues);
+
+			result.put("success", true);
+			ObjectMapper mapper = getJsonMapper();
+			return mapper.writeValueAsString(result);
+		} catch (Exception e) {
+			return this.handleManagedException(null, e, response);
+		} finally {
+			this.finishRequest();
 		}
 
-		if (file.isEmpty()) {
-			throw new Exception("Upload was not succesful. Try again please.");
-		}
-
-		this.prepareRequest(request, response);
-
-		IFileUploadService srv = this.getFileUploadService(handler);
-		Map<String, String> paramValues = new HashMap<String, String>();
-
-		for (String p : srv.getParamNames()) {
-			paramValues.put(p, request.getParameter(p));
-		}
-
-		IUploadedFileDescriptor fileDescriptor = new UploadedFileDescriptor();
-		fileDescriptor.setContentType(file.getContentType());
-		fileDescriptor.setOriginalName(file.getOriginalFilename());
-		fileDescriptor.setNewName(file.getName());
-		fileDescriptor.setSize(file.getSize());
-		Map<String, Object> result = srv.execute(fileDescriptor,
-				file.getInputStream(), paramValues);
-
-		this.finishRequest();
-		result.put("success", true);
-		ObjectMapper mapper = getJsonMapper();
-		return mapper.writeValueAsString(result);
 	}
 
 	/**
@@ -121,8 +130,8 @@ public class FileUploadController extends AbstractBaseController {
 			}
 		}
 
-		throw new Exception(name + "File upload service not found for name "
-				+ name + "!");
+		throw new BusinessException(ErrorCode.SRV_FILEUPLOAD_SRV_NOT_FOUND,
+				"File upload service not found for name " + name + "!");
 	}
 
 	@SuppressWarnings("unchecked")

@@ -110,7 +110,7 @@ public class AbstractDsRpcController<M, F, P> extends
 			}
 
 		} catch (Exception e) {
-			return this.handleException(e, response);
+			return this.handleManagedException(null, e, response);
 		} finally {
 			this.finishRequest();
 		}
@@ -194,7 +194,7 @@ public class AbstractDsRpcController<M, F, P> extends
 			}
 
 		} catch (Exception e) {
-			return this.handleException(e, response);
+			return this.handleManagedException(null, e, response);
 		} finally {
 			this.finishRequest();
 		}
@@ -259,6 +259,8 @@ public class AbstractDsRpcController<M, F, P> extends
 			stopWatch.stop();
 			result.setExecutionTime(stopWatch.getTime());
 			return marshaller.writeResultToString(result);
+		} catch (Exception e) {
+			return this.handleManagedException(null, e, response);
 		} finally {
 			this.finishRequest();
 		}

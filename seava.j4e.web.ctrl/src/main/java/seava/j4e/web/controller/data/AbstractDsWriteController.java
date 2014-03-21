@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +25,7 @@ import seava.j4e.api.Constants;
 import seava.j4e.api.action.result.IActionResultDelete;
 import seava.j4e.api.action.result.IActionResultSave;
 import seava.j4e.api.action.result.IDsMarshaller;
+import seava.j4e.api.exceptions.ErrorCode;
 import seava.j4e.api.model.IModelWithId;
 import seava.j4e.api.service.presenter.IDsService;
 import seava.j4e.web.result.ActionResultDelete;
@@ -110,7 +112,8 @@ public class AbstractDsWriteController<M, F, P> extends
 			return out;
 
 		} catch (Exception e) {
-			return this.handleException(e, response);
+			return this.handleManagedException(ErrorCode.DB_INSERT_ERROR, e,
+					response);
 		} finally {
 			this.finishRequest();
 		}
@@ -190,8 +193,8 @@ public class AbstractDsWriteController<M, F, P> extends
 
 			return out;
 		} catch (Exception e) {
-			this.handleException(e, response);
-			return null;
+			return this.handleManagedException(ErrorCode.DB_UPDATE_ERROR, e,
+					response);
 		} finally {
 			this.finishRequest();
 		}
@@ -269,8 +272,9 @@ public class AbstractDsWriteController<M, F, P> extends
 			return out;
 
 		} catch (Exception e) {
-			this.handleException(e, response);
-			return null;
+			return this.handleManagedException(ErrorCode.DB_DELETE_ERROR, e,
+					response);
+
 		} finally {
 			this.finishRequest();
 		}
@@ -337,8 +341,8 @@ public class AbstractDsWriteController<M, F, P> extends
 
 			return out;
 		} catch (Exception e) {
-			this.handleException(e, response);
-			return null;
+			return this.handleManagedException(ErrorCode.DB_DELETE_ERROR, e,
+					response);
 		} finally {
 			this.finishRequest();
 		}

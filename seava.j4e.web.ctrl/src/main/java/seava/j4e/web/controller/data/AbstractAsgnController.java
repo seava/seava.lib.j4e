@@ -25,6 +25,7 @@ import seava.j4e.api.action.query.IQueryBuilder;
 import seava.j4e.api.action.query.ISortToken;
 import seava.j4e.api.action.result.IActionResultFind;
 import seava.j4e.api.action.result.IDsMarshaller;
+import seava.j4e.api.exceptions.ErrorCode;
 import seava.j4e.api.service.presenter.IAsgnService;
 import seava.j4e.web.controller.AbstractBaseController;
 import seava.j4e.web.result.ActionResultFind;
@@ -125,7 +126,8 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			return marshaller.writeResultToString(result);
 		} catch (Exception e) {
-			return this.handleException(e, response);
+			return this.handleManagedException(ErrorCode.DB_QUERY_ERROR, e,
+					response);
 		} finally {
 			this.finishRequest();
 		}
@@ -223,7 +225,8 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			return marshaller.writeResultToString(result);
 		} catch (Exception e) {
-			return this.handleException(e, response);
+			return this.handleManagedException(ErrorCode.DB_QUERY_ERROR, e,
+					response);
 		} finally {
 			this.finishRequest();
 		}
@@ -272,7 +275,7 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			return service.setup(resourceName, objectId);
 		} catch (Exception e) {
-			return this.handleException(e, response);
+			return this.handleManagedException(null, e, response);
 		} finally {
 			this.finishRequest();
 		}
@@ -326,10 +329,10 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			service.moveLeft(selectionId, this.selectedIdsAsList(selectedIds));
 			stopWatch.stop();
-
 			return "";
 		} catch (Exception e) {
-			return this.handleException(e, response);
+			return this.handleManagedException(ErrorCode.DB_UPDATE_ERROR, e,
+					response);
 		} finally {
 			this.finishRequest();
 		}
@@ -386,7 +389,8 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			return "";
 		} catch (Exception e) {
-			return this.handleException(e, response);
+			return this.handleManagedException(ErrorCode.DB_UPDATE_ERROR, e,
+					response);
 		} finally {
 			this.finishRequest();
 		}
@@ -441,7 +445,8 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			return "";
 		} catch (Exception e) {
-			return this.handleException(e, response);
+			return this.handleManagedException(ErrorCode.DB_UPDATE_ERROR, e,
+					response);
 		} finally {
 			this.finishRequest();
 		}
@@ -496,7 +501,8 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			return "";
 		} catch (Exception e) {
-			return this.handleException(e, response);
+			return this.handleManagedException(ErrorCode.DB_UPDATE_ERROR, e,
+					response);
 		} finally {
 			this.finishRequest();
 		}
@@ -552,7 +558,8 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			return "";
 		} catch (Exception e) {
-			return this.handleException(e, response);
+			return this.handleManagedException(ErrorCode.DB_UPDATE_ERROR, e,
+					response);
 		} finally {
 			this.finishRequest();
 		}
@@ -609,7 +616,8 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			return "";
 		} catch (Exception e) {
-			return this.handleException(e, response);
+			return this.handleManagedException(ErrorCode.DB_UPDATE_ERROR, e,
+					response);
 		} finally {
 			this.finishRequest();
 		}
@@ -660,7 +668,7 @@ public abstract class AbstractAsgnController<M, F, P> extends
 
 			return "";
 		} catch (Exception e) {
-			return this.handleException(e, response);
+			return this.handleManagedException(null, e, response);
 		} finally {
 			this.finishRequest();
 		}

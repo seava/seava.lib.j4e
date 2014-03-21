@@ -365,7 +365,14 @@ public class SessionController extends AbstractBaseController {
 		ILoginParams lp = this.getApplicationContext().getBean(
 				ILoginParams.class);
 
-		lp.setRemoteIp(request.getRemoteAddr());
+		String ip = request.getHeader("X-Forwarded-For");
+		if (ip != null && !"".equals(ip)) {
+			ip = ip.substring(0, ip.indexOf(","));
+		} else {
+			ip = request.getRemoteAddr();
+		}
+
+		lp.setRemoteIp(ip);
 		lp.setUserAgent(request.getHeader("User-Agent"));
 		lp.setRemoteHost(request.getRemoteHost());
 		lp.setLanguage(language);
