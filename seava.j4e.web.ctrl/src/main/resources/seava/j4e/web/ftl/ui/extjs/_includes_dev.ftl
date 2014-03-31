@@ -172,6 +172,8 @@
 	<script type="text/javascript"
 		src="${urlUiExtjsCore}/js/e4e/dc/command/DcRpcDataListCommand.js"></script>
 	<script type="text/javascript"
+		src="${urlUiExtjsCore}/js/e4e/dc/command/DcRpcIdListCommand.js"></script>		
+	<script type="text/javascript"
 		src="${urlUiExtjsCore}/js/e4e/dc/command/DcRpcFilterCommand.js"></script>
 	
 	<!-- dc-tools -->

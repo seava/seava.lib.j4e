@@ -9,12 +9,12 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import seava.j4e.api.action.result.IActionResultRpcData;
+import seava.j4e.api.action.result.IActionResultRpc;
 
 @XmlRootElement(name = "result")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ActionResultRpcData extends AbstractResultData implements
-		IActionResultRpcData {
+public class ActionResultRpc extends AbstractResultData implements
+		IActionResultRpc {
 
 	/**
 	 * Data value-object.

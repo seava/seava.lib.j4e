@@ -57,11 +57,7 @@ public interface IDsMarshaller<M, F, P> {
 	public String writeResultToString(IActionResultDelete result)
 			throws Exception;
 
-	public String writeResultToString(IActionResultRpcData result)
-			throws Exception;
-
-	public String writeResultToString(IActionResultRpcFilter result)
-			throws Exception;
+	public String writeResultToString(IActionResultRpc result) throws Exception;
 
 	public void writeDataToStream(M m, OutputStream out) throws Exception;
 
@@ -78,9 +74,7 @@ public interface IDsMarshaller<M, F, P> {
 	public void writeResultToStream(IActionResultSave result, OutputStream out)
 			throws Exception;
 
-	public void writeResultToStream(IActionResultRpcData result,
-			OutputStream out) throws Exception;
+	public void writeResultToStream(IActionResultRpc result, OutputStream out)
+			throws Exception;
 
-	public void writeResultToStream(IActionResultRpcFilter result,
-			OutputStream out) throws Exception;
 }

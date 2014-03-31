@@ -57,6 +57,11 @@ public class Constants {
 	public static final String DS_ACTION_EXPORT = "export";
 	public static final String DS_ACTION_PRINT = "print";
 	public static final String DS_ACTION_RPC = "rpc";
+	public static final String DS_ACTION_RPC_TYPE = "rpcType";
+	public static final String DS_ACTION_RPC_TYPE_DATA = "data";
+	public static final String DS_ACTION_RPC_TYPE_FILTER = "filter";
+	public static final String DS_ACTION_RPC_TYPE_DATALIST = "dataList";
+	public static final String DS_ACTION_RPC_TYPE_IDLIST = "idList";
 
 	public static final String ASGN_ACTION_QUERY_LEFT = "findLeft";
 	public static final String ASGN_ACTION_QUERY_RIGHT = "findRight";

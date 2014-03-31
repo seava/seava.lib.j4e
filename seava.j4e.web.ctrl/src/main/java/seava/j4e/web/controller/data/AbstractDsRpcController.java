@@ -12,13 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import seava.j4e.api.Constants;
-import seava.j4e.api.action.result.IActionResultRpcData;
-import seava.j4e.api.action.result.IActionResultRpcFilter;
+import seava.j4e.api.action.result.IActionResultRpc;
 import seava.j4e.api.action.result.IActionResultSave;
 import seava.j4e.api.action.result.IDsMarshaller;
 import seava.j4e.api.service.presenter.IDsService;
-import seava.j4e.web.result.ActionResultRpcData;
-import seava.j4e.web.result.ActionResultRpcFilter;
+import seava.j4e.web.result.ActionResultRpc;
 import seava.j4e.web.result.ActionResultSave;
 
 import org.apache.commons.lang.time.StopWatch;
@@ -48,7 +46,8 @@ public class AbstractDsRpcController<M, F, P> extends
 	 */
 	@RequestMapping(params = {
 			Constants.REQUEST_PARAM_ACTION + "=" + Constants.DS_ACTION_RPC,
-			Constants.DS_ACTION_RPC + "Type=data" })
+			Constants.DS_ACTION_RPC_TYPE + "="
+					+ Constants.DS_ACTION_RPC_TYPE_DATA })
 	@ResponseBody
 	public String rpcData(
 			@PathVariable String resourceName,
@@ -102,13 +101,78 @@ public class AbstractDsRpcController<M, F, P> extends
 				P params = marshaller.readParamsFromString(paramString);
 
 				service.rpcData(rpcName, data, params);
-				IActionResultRpcData result = this.packRpcDataResult(data,
-						params);
+				IActionResultRpc result = this.packRpcDataResult(data, params);
 				stopWatch.stop();
 				result.setExecutionTime(stopWatch.getTime());
 				return marshaller.writeResultToString(result);
 			}
 
+		} catch (Exception e) {
+			return this.handleManagedException(null, e, response);
+		} finally {
+			this.finishRequest();
+		}
+	}
+
+	/**
+	 * Default handler for remote procedure call on a filter.
+	 * 
+	 * @param resourceName
+	 * @param dataformat
+	 * @param dataString
+	 * @param paramString
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(method = RequestMethod.POST, params = {
+			Constants.REQUEST_PARAM_ACTION + "=" + Constants.DS_ACTION_RPC,
+			Constants.DS_ACTION_RPC_TYPE + "="
+					+ Constants.DS_ACTION_RPC_TYPE_FILTER })
+	@ResponseBody
+	public String rpcFilter(
+			@PathVariable String resourceName,
+			@PathVariable String dataFormat,
+			@RequestParam(value = Constants.REQUEST_PARAM_SERVICE_NAME_PARAM, required = true) String rpcName,
+			@RequestParam(value = Constants.REQUEST_PARAM_DATA, required = false, defaultValue = "{}") String dataString,
+			@RequestParam(value = Constants.REQUEST_PARAM_PARAMS, required = false, defaultValue = "{}") String paramString,
+			HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
+
+		try {
+			StopWatch stopWatch = new StopWatch();
+			stopWatch.start();
+
+			if (logger.isInfoEnabled()) {
+				logger.info(
+						"Processing request: {}.{} -> action = {}-filter / {}",
+						new Object[] { resourceName, dataFormat,
+								Constants.DS_ACTION_RPC, rpcName });
+			}
+
+			if (logger.isDebugEnabled()) {
+				logger.debug("  --> request-data: {} ",
+						new Object[] { dataString });
+				logger.debug("  --> request-params: {} ",
+						new Object[] { paramString });
+			}
+
+			this.prepareRequest(request, response);
+
+			this.authorizeDsAction(resourceName, Constants.DS_ACTION_RPC,
+					rpcName);
+
+			IDsService<M, F, P> service = this.findDsService(resourceName);
+			IDsMarshaller<M, F, P> marshaller = service
+					.createMarshaller(dataFormat);
+
+			F filter = marshaller.readFilterFromString(dataString);
+			P params = marshaller.readParamsFromString(paramString);
+
+			service.rpcFilter(rpcName, filter, params);
+			IActionResultRpc result = this.packRpcFilterResult(filter, params);
+			stopWatch.stop();
+			result.setExecutionTime(stopWatch.getTime());
+			return marshaller.writeResultToString(result);
 		} catch (Exception e) {
 			return this.handleManagedException(null, e, response);
 		} finally {
@@ -132,7 +196,8 @@ public class AbstractDsRpcController<M, F, P> extends
 	 */
 	@RequestMapping(params = {
 			Constants.REQUEST_PARAM_ACTION + "=" + Constants.DS_ACTION_RPC,
-			Constants.DS_ACTION_RPC + "Type=dataList" })
+			Constants.DS_ACTION_RPC_TYPE + "="
+					+ Constants.DS_ACTION_RPC_TYPE_DATALIST })
 	@ResponseBody
 	public String rpcDataList(
 			@PathVariable String resourceName,
@@ -201,20 +266,24 @@ public class AbstractDsRpcController<M, F, P> extends
 	}
 
 	/**
-	 * Default handler for remote procedure call on a filter.
+	 * Default handler for remote procedure call on a list of value-object IDs.
 	 * 
 	 * @param resourceName
-	 * @param dataformat
+	 * @param dataFormat
+	 * @param rpcName
 	 * @param dataString
 	 * @param paramString
+	 * @param request
+	 * @param response
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(method = RequestMethod.POST, params = {
+	@RequestMapping(params = {
 			Constants.REQUEST_PARAM_ACTION + "=" + Constants.DS_ACTION_RPC,
-			Constants.DS_ACTION_RPC + "Type=filter" })
+			Constants.DS_ACTION_RPC_TYPE + "="
+					+ Constants.DS_ACTION_RPC_TYPE_IDLIST })
 	@ResponseBody
-	public String rpcFilter(
+	public String rpcIdList(
 			@PathVariable String resourceName,
 			@PathVariable String dataFormat,
 			@RequestParam(value = Constants.REQUEST_PARAM_SERVICE_NAME_PARAM, required = true) String rpcName,
@@ -229,36 +298,43 @@ public class AbstractDsRpcController<M, F, P> extends
 
 			if (logger.isInfoEnabled()) {
 				logger.info(
-						"Processing request: {}.{} -> action = {}-filter / {}",
+						"Processing request: {}.{} -> action = {}-idList / {}",
 						new Object[] { resourceName, dataFormat,
 								Constants.DS_ACTION_RPC, rpcName });
 			}
 
 			if (logger.isDebugEnabled()) {
-				logger.debug("  --> request-data: {} ",
+
+				logger.debug("  --> request-idList: {} ",
 						new Object[] { dataString });
 				logger.debug("  --> request-params: {} ",
 						new Object[] { paramString });
 			}
-
 			this.prepareRequest(request, response);
 
 			this.authorizeDsAction(resourceName, Constants.DS_ACTION_RPC,
 					rpcName);
 
 			IDsService<M, F, P> service = this.findDsService(resourceName);
-			IDsMarshaller<M, F, P> marshaller = service
-					.createMarshaller(dataFormat);
-
-			F filter = marshaller.readFilterFromString(dataString);
+			IDsMarshaller<M, F, P> marshaller = null;
+			marshaller = service.createMarshaller("json");
+			List<Object> list = marshaller.readListFromString(dataString,
+					Object.class);
 			P params = marshaller.readParamsFromString(paramString);
 
-			service.rpcFilter(rpcName, filter, params);
-			IActionResultRpcFilter result = this.packRpcFilterResult(filter,
-					params);
-			stopWatch.stop();
-			result.setExecutionTime(stopWatch.getTime());
-			return marshaller.writeResultToString(result);
+			if (dataFormat.equals("stream")) {
+				InputStream s = service.rpcIdsStream(rpcName, list, params);
+				this.sendFile(s, response.getOutputStream());
+				return "";
+			} else {
+				service.rpcIds(rpcName, list, params);
+				IActionResultSave result = this.packRpcIdListResult(list,
+						params);
+				stopWatch.stop();
+				result.setExecutionTime(stopWatch.getTime());
+				return marshaller.writeResultToString(result);
+			}
+
 		} catch (Exception e) {
 			return this.handleManagedException(null, e, response);
 		} finally {
@@ -266,21 +342,28 @@ public class AbstractDsRpcController<M, F, P> extends
 		}
 	}
 
-	public IActionResultRpcData packRpcDataResult(M data, P params) {
-		IActionResultRpcData pack = new ActionResultRpcData();
+	public IActionResultRpc packRpcDataResult(M data, P params) {
+		IActionResultRpc pack = new ActionResultRpc();
 		pack.setData(data);
 		pack.setParams(params);
 		return pack;
 	}
 
-	public IActionResultRpcFilter packRpcFilterResult(F filter, P params) {
-		IActionResultRpcFilter pack = new ActionResultRpcFilter();
+	public IActionResultRpc packRpcFilterResult(F filter, P params) {
+		IActionResultRpc pack = new ActionResultRpc();
 		pack.setData(filter);
 		pack.setParams(params);
 		return pack;
 	}
 
 	public IActionResultSave packRpcDataListResult(List<M> data, P params) {
+		IActionResultSave pack = new ActionResultSave();
+		pack.setData(data);
+		pack.setParams(params);
+		return pack;
+	}
+
+	public IActionResultSave packRpcIdListResult(List<Object> data, P params) {
 		IActionResultSave pack = new ActionResultSave();
 		pack.setData(data);
 		pack.setParams(params);

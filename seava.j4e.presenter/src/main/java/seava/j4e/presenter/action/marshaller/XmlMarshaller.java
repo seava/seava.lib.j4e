@@ -15,8 +15,7 @@ import seava.j4e.api.action.query.IFilterRule;
 import seava.j4e.api.action.query.ISortToken;
 import seava.j4e.api.action.result.IActionResultDelete;
 import seava.j4e.api.action.result.IActionResultFind;
-import seava.j4e.api.action.result.IActionResultRpcData;
-import seava.j4e.api.action.result.IActionResultRpcFilter;
+import seava.j4e.api.action.result.IActionResultRpc;
 import seava.j4e.api.action.result.IActionResultSave;
 import seava.j4e.api.action.result.IDsMarshaller;
 
@@ -153,17 +152,7 @@ public class XmlMarshaller<M, F, P> extends AbstractMarshaller<M, F, P>
 	}
 
 	@Override
-	public String writeResultToString(IActionResultRpcData result)
-			throws Exception {
-		StringWriter writer = new StringWriter();
-		createMarshaller(new Class[] { result.getClass() }).marshal(result,
-				writer);
-		return writer.toString();
-	}
-
-	@Override
-	public String writeResultToString(IActionResultRpcFilter result)
-			throws Exception {
+	public String writeResultToString(IActionResultRpc result) throws Exception {
 		StringWriter writer = new StringWriter();
 		createMarshaller(new Class[] { result.getClass() }).marshal(result,
 				writer);
@@ -206,15 +195,8 @@ public class XmlMarshaller<M, F, P> extends AbstractMarshaller<M, F, P>
 	}
 
 	@Override
-	public void writeResultToStream(IActionResultRpcData result,
-			OutputStream out) throws Exception {
-		createMarshaller(new Class[] { result.getClass() })
-				.marshal(result, out);
-	}
-
-	@Override
-	public void writeResultToStream(IActionResultRpcFilter result,
-			OutputStream out) throws Exception {
+	public void writeResultToStream(IActionResultRpc result, OutputStream out)
+			throws Exception {
 		createMarshaller(new Class[] { result.getClass() })
 				.marshal(result, out);
 	}

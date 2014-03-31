@@ -15,8 +15,7 @@ import seava.j4e.api.action.query.IFilterRule;
 import seava.j4e.api.action.query.ISortToken;
 import seava.j4e.api.action.result.IActionResultDelete;
 import seava.j4e.api.action.result.IActionResultFind;
-import seava.j4e.api.action.result.IActionResultRpcData;
-import seava.j4e.api.action.result.IActionResultRpcFilter;
+import seava.j4e.api.action.result.IActionResultRpc;
 import seava.j4e.api.action.result.IActionResultSave;
 import seava.j4e.api.action.result.IDsMarshaller;
 import seava.j4e.commons.action.query.FilterRule;
@@ -59,7 +58,7 @@ public class JsonMarshaller<M, F, P> extends AbstractMarshaller<M, F, P>
 				Constants.get_server_datetime_format());
 
 		this.mapper.setDateFormat(sdf);
-		this.mapper.setDateFormat(sdf);
+
 	}
 
 	@Override
@@ -159,14 +158,7 @@ public class JsonMarshaller<M, F, P> extends AbstractMarshaller<M, F, P>
 	}
 
 	@Override
-	public String writeResultToString(IActionResultRpcData result)
-			throws Exception {
-		return this.mapper.writeValueAsString(result);
-	}
-
-	@Override
-	public String writeResultToString(IActionResultRpcFilter result)
-			throws Exception {
+	public String writeResultToString(IActionResultRpc result) throws Exception {
 		return this.mapper.writeValueAsString(result);
 	}
 
@@ -204,14 +196,8 @@ public class JsonMarshaller<M, F, P> extends AbstractMarshaller<M, F, P>
 	}
 
 	@Override
-	public void writeResultToStream(IActionResultRpcData result,
-			OutputStream out) throws Exception {
-		this.mapper.writeValue(out, result);
-	}
-
-	@Override
-	public void writeResultToStream(IActionResultRpcFilter result,
-			OutputStream out) throws Exception {
+	public void writeResultToStream(IActionResultRpc result, OutputStream out)
+			throws Exception {
 		this.mapper.writeValue(out, result);
 	}
 

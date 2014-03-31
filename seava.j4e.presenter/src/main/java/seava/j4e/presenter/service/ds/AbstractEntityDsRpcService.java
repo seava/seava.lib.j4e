@@ -246,6 +246,68 @@ public abstract class AbstractEntityDsRpcService<M extends AbstractDsModel<E>, F
 	}
 
 	/**
+	 * Execute an arbitrary service method with a list of data IDs.
+	 * 
+	 * @param procedureName
+	 * @param list
+	 * @param params
+	 * @throws Exception
+	 */
+	public void rpcIds(String procedureName, List<Object> list, P params)
+			throws Exception {
+
+		if (!rpcData.containsKey(procedureName)) {
+			throw new Exception("No such procedure defined: " + procedureName);
+		}
+
+		RpcDefinition def = rpcData.get(procedureName);
+		AbstractPresenterBaseService delegate = this.getDelegate(def
+				.getDelegateClass());
+		RpcMethod rpcMethod = this.getRpcMethod(def.getDelegateClass(),
+				def.getMethodName(), List.class);
+		if (rpcMethod.isWithParams()) {
+			rpcMethod.getMethod().invoke(delegate, list, params);
+		} else {
+			rpcMethod.getMethod().invoke(delegate, list);
+		}
+	}
+
+	/**
+	 * Execute an arbitrary service method with a list of data IDs returning a
+	 * stream as result.
+	 * 
+	 * 
+	 * @param procedureName
+	 * @param list
+	 * @param params
+	 * @return
+	 * @throws Exception
+	 */
+	public InputStream rpcIdsStream(String procedureName, List<Object> list,
+			P params) throws Exception {
+
+		if (!rpcData.containsKey(procedureName)) {
+			throw new Exception("No such procedure defined: " + procedureName);
+		}
+
+		RpcDefinition def = rpcData.get(procedureName);
+		AbstractPresenterBaseService delegate = this.getDelegate(def
+				.getDelegateClass());
+		RpcMethod rpcMethod = this.getRpcMethod(def.getDelegateClass(),
+				def.getMethodName(), List.class);
+
+		InputStream result = null;
+		if (rpcMethod.isWithParams()) {
+			result = (InputStream) rpcMethod.getMethod().invoke(delegate, list,
+					params);
+		} else {
+			result = (InputStream) rpcMethod.getMethod().invoke(delegate, list);
+		}
+
+		return result;
+	}
+
+	/**
 	 * Helper method to find the rpc method to be invoked.
 	 * 
 	 * @param claz

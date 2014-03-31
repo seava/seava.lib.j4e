@@ -18,6 +18,9 @@ public interface IDsRpcService<M, F, P> extends IDsBaseService<M, F, P> {
 	public void rpcData(String procedureName, List<M> list, P params)
 			throws Exception;
 
+	public void rpcIds(String procedureName, List<Object> list, P params)
+			throws Exception;
+	
 	public InputStream rpcFilterStream(String procedureName, F filter, P params)
 			throws Exception;
 
@@ -26,4 +29,8 @@ public interface IDsRpcService<M, F, P> extends IDsBaseService<M, F, P> {
 
 	public InputStream rpcDataStream(String procedureName, List<M> list,
 			P params) throws Exception;
+	
+	public InputStream rpcIdsStream(String procedureName, List<Object> list,
+			P params) throws Exception;
+	
 }
