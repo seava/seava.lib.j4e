@@ -45,7 +45,9 @@
 	<script type="text/javascript"
 		src="${urlUiExtjsCore}/js/e4e/base/DisplayField.js"></script>
 	<script type="text/javascript"
-		src="${urlUiExtjsCore}/js/e4e/base/KeyboardShortcutsWindow.js"></script>
+		src="${urlUiExtjsCore}/js/e4e/base/KeyboardShortcutsWindow.js"></script>		
+	<script type="text/javascript"
+		src="${urlUiExtjsCore}/js/e4e/base/KeyBindings.js"></script>
 	<script type="text/javascript"
 		src="${urlUiExtjsCore}/js/e4e/base/HomePanel.js"></script>
 	<script type="text/javascript"
