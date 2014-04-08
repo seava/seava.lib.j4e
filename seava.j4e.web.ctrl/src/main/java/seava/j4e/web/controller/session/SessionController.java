@@ -70,9 +70,14 @@ public class SessionController extends AbstractBaseController {
 				.getAttribute(
 						HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY);
 		if (ctx != null && ctx.getAuthentication() != null) {
-			response.sendRedirect(this.getSettings()
-					.get(Constants.PROP_CTXPATH));
-			return null;
+			Object su = ctx.getAuthentication().getPrincipal();
+			if (su != null && (su instanceof ISessionUser)
+					&& (!((ISessionUser) su).isSessionLocked())) {
+				response.sendRedirect(this.getSettings().get(
+						Constants.PROP_CTXPATH));
+				return null;
+			}
+
 		}
 
 		Map<String, Object> model = new HashMap<String, Object>();

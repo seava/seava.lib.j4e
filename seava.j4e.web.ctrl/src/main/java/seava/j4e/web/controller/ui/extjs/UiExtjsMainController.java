@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import seava.j4e.api.Constants;
 import seava.j4e.api.enums.SysParam;
+import seava.j4e.api.exceptions.BusinessException;
+import seava.j4e.api.exceptions.ErrorCode;
 import seava.j4e.api.extensions.IExtensions;
 import seava.j4e.api.session.ISessionUser;
 import seava.j4e.api.setup.ISetupParticipant;
@@ -40,6 +42,10 @@ public class UiExtjsMainController extends AbstractUiExtjsController {
 			ISessionUser su = (ISessionUser) SecurityContextHolder.getContext()
 					.getAuthentication().getPrincipal();
 
+			if (su.isSessionLocked()) {
+				throw new BusinessException(ErrorCode.SEC_SESSION_LOCKED,
+						"Session has been locked.");
+			}
 		} catch (Exception e) {
 			response.sendRedirect(this.getSettings().get(
 					Constants.PROP_LOGIN_PAGE));
