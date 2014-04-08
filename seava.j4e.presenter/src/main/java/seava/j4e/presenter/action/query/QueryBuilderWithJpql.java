@@ -47,6 +47,9 @@ public class QueryBuilderWithJpql<M, F, P> extends
 	private static final String OP_IN = "in";
 	private static final String OP_NOT_IN = "not in";
 
+	private static final String OP_NULL = "is null";
+	private static final String OP_NOT_NULL = "is not null";
+
 	final static Logger logger = LoggerFactory
 			.getLogger(QueryBuilderWithJpql.class);
 
@@ -455,6 +458,14 @@ public class QueryBuilderWithJpql<M, F, P> extends
 
 						if (fv != null) {
 							if (m.getReturnType() == java.lang.String.class) {
+
+								String _fv = (String) fv;
+								String _op = "like";
+								String _criteria = null;
+
+								boolean withParamPlaceholder = true;
+								boolean withParamsAsList = false;
+
 								if (jpqlFilterRules.containsKey(fieldName)) {
 									// if this field has a special filter
 									// condition use it
@@ -465,15 +476,58 @@ public class QueryBuilderWithJpql<M, F, P> extends
 									// build the default condition on the mapped
 									// entity field in case it is mapped
 									if (refpaths.containsKey(fieldName)) {
-										String _op = "like";
-										if ("id".equals(fieldName)
+
+										if (_fv.startsWith("[NULL]")) {
+											_op = OP_NULL;
+											withParamPlaceholder = false;
+											_criteria = "(" + entityAlias + "."
+													+ refpaths.get(fieldName)
+													+ " " + _op + " OR "
+													+ entityAlias + "."
+													+ refpaths.get(fieldName)
+													+ " = '' )";
+										} else if (_fv.startsWith("[!NULL]")) {
+											_op = OP_NOT_NULL;
+											withParamPlaceholder = false;
+											_criteria = "(" + entityAlias + "."
+													+ refpaths.get(fieldName)
+													+ " " + _op + " AND "
+													+ entityAlias + "."
+													+ refpaths.get(fieldName)
+													+ " <> '' )";											
+										} else if (_fv.indexOf(",") > 0) {
+											withParamsAsList = true;
+											if (_fv.startsWith("[!]")) {
+												_op = OP_NOT_IN;
+												_fv = _fv.substring(3);
+											} else {
+												_op = OP_IN;
+											}
+										} else if ("id".equals(fieldName)
 												|| "refid".equals(fieldName)
 												|| "clientId".equals(fieldName)) {
 											_op = "=";
 										}
-										addFilterCondition(entityAlias + "."
-												+ refpaths.get(fieldName) + " "
-												+ _op + " :" + fieldName);
+
+										if (_criteria != null) {
+											addFilterCondition(_criteria);
+										} else {
+											if (withParamPlaceholder) {
+												addFilterCondition(entityAlias
+														+ "."
+														+ refpaths
+																.get(fieldName)
+														+ " " + _op + " :"
+														+ fieldName);
+											} else {
+												addFilterCondition(entityAlias
+														+ "."
+														+ refpaths
+																.get(fieldName)
+														+ " " + _op);
+											}
+										}
+
 									}
 								}
 								// add the value anyway , maybe it is used in
@@ -485,8 +539,16 @@ public class QueryBuilderWithJpql<M, F, P> extends
 								// parameter
 								// it should be forced to null anywhere in
 								// pre-query phase.
-								this.defaultFilterItems.put(fieldName,
-										(String) fv);
+								// if (withParamPlaceholder) {
+								if (withParamsAsList) {
+									this.defaultFilterItems.put(fieldName,
+											Arrays.asList(((String) _fv)
+													.split(",")));
+								} else {
+									this.defaultFilterItems.put(fieldName,
+											(String) _fv);
+								}
+								// }
 							} else {
 								if (fnrt.getType() != FilterFieldNameAndRangeType.NO_RANGE) {
 									if (fnrt.getType() == FilterFieldNameAndRangeType.RANGE_FROM) {
