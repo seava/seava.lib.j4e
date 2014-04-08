@@ -604,7 +604,7 @@ public class AbstractDsReadController<M, F, P> extends
 						outFile), "UTF-8");
 				temp.process(root, out);
 				out.flush();
-
+				out.close();
 				// just send the file name
 				return "{success:true, file:\"" + outFile.getName() + "\"}";
 			}

@@ -1,6 +1,7 @@
 package seava.j4e.web.controller.download;
 
 import java.io.File;
+import java.nio.file.Files;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,7 +62,7 @@ public class FileDownloadController extends AbstractBaseController {
 		// return null;
 
 		// delete it
-		file.delete();
+		Files.delete(file.toPath()); 
 
 		return null;
 	}
