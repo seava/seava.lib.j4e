@@ -219,7 +219,8 @@ public abstract class AbstractUiExtjsController extends AbstractBaseController {
 					Constants.REQUEST_PARAM_SERVICE_NAME_PARAM);
 			addConstant(sb, "REQUEST_PARAM_EXPORT_INFO",
 					Constants.REQUEST_PARAM_EXPORT_INFO);
-
+			addConstant(sb, "REQUEST_PARAM_EXPORT_DOWNLOAD",
+					Constants.REQUEST_PARAM_EXPORT_DOWNLOAD);
 			addConstant(sb, "DS_INFO", Constants.DS_ACTION_INFO);
 			addConstant(sb, "DS_QUERY", Constants.DS_ACTION_QUERY);
 			addConstant(sb, "DS_INSERT", Constants.DS_ACTION_INSERT);

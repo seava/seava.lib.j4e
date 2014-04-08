@@ -6,6 +6,7 @@
 package seava.j4e.web.controller.data;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -14,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -191,9 +193,8 @@ public class AbstractDsReadController<M, F, P> extends
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value = Constants.CTXPATH_DS
-			+ "/{resourceName}.{dataFormat}", params = Constants.REQUEST_PARAM_ACTION
-			+ "=" + Constants.DS_ACTION_EXPORT, method = { RequestMethod.GET,
+	@RequestMapping(params = Constants.REQUEST_PARAM_ACTION + "="
+			+ Constants.DS_ACTION_EXPORT, method = { RequestMethod.GET,
 			RequestMethod.POST })
 	@ResponseBody
 	public String export(
@@ -207,6 +208,7 @@ public class AbstractDsReadController<M, F, P> extends
 			@RequestParam(value = Constants.REQUEST_PARAM_SORT, required = false, defaultValue = "") String orderByCol,
 			@RequestParam(value = Constants.REQUEST_PARAM_SENSE, required = false, defaultValue = "") String orderBySense,
 			@RequestParam(value = Constants.REQUEST_PARAM_ORDERBY, required = false, defaultValue = "") String orderBy,
+			@RequestParam(value = Constants.REQUEST_PARAM_EXPORT_DOWNLOAD, required = false, defaultValue = "true") Boolean exportDownload,
 			@RequestParam(value = Constants.REQUEST_PARAM_EXPORT_INFO, required = true, defaultValue = "") String exportInfoString,
 			HttpServletRequest request, HttpServletResponse response)
 
@@ -301,25 +303,32 @@ public class AbstractDsReadController<M, F, P> extends
 					.getTempPath());
 			service.doExport(builder, writer);
 
-			if (dataFormat.equals(Constants.DATA_FORMAT_CSV)) {
-				response.setContentType("application/vnd.ms-excel; charset=UTF-8");
-			}
-			if (dataFormat.equals(Constants.DATA_FORMAT_JSON)) {
-				response.setContentType("text/plain; charset=UTF-8");
-			}
-			if (dataFormat.equals(Constants.DATA_FORMAT_HTML)) {
-				response.setContentType("text/html; charset=UTF-8");
-			}
-			if (dataFormat.equals(Constants.DATA_FORMAT_XML)) {
-				response.setContentType("text/xml; charset=UTF-8");
-			}
-			response.setHeader("Content-Description", "File Transfer");
-			response.setHeader("Content-Disposition", "inline; filename=\""
-					+ service.getModelClass().getSimpleName() + "."
-					+ dataFormat.toLowerCase() + "\";");
+			if (exportDownload) {
+				// get the file content
+				if (dataFormat.equals(Constants.DATA_FORMAT_CSV)) {
+					response.setContentType("application/vnd.ms-excel; charset=UTF-8");
+				}
+				if (dataFormat.equals(Constants.DATA_FORMAT_JSON)) {
+					response.setContentType("text/plain; charset=UTF-8");
+				}
+				if (dataFormat.equals(Constants.DATA_FORMAT_HTML)) {
+					response.setContentType("text/html; charset=UTF-8");
+				}
+				if (dataFormat.equals(Constants.DATA_FORMAT_XML)) {
+					response.setContentType("text/xml; charset=UTF-8");
+				}
+				response.setHeader("Content-Description", "File Transfer");
+				response.setHeader("Content-Disposition", "inline; filename=\""
+						+ service.getModelClass().getSimpleName() + "."
+						+ dataFormat.toLowerCase() + "\";");
 
-			this.sendFile(writer.getOutFile(), response.getOutputStream());
-			return null;
+				this.sendFile(writer.getOutFile(), response.getOutputStream());
+				return null;
+			} else {
+				// just send the file name
+				return "{success:true, file:\"" + writer.getOutFile().getName()
+						+ "\"}";
+			}
 		} catch (Exception e) {
 			// return this.handleException(e, response);
 			throw e;
@@ -456,6 +465,7 @@ public class AbstractDsReadController<M, F, P> extends
 			@RequestParam(value = Constants.REQUEST_PARAM_SORT, required = false, defaultValue = "") String orderByCol,
 			@RequestParam(value = Constants.REQUEST_PARAM_SENSE, required = false, defaultValue = "") String orderBySense,
 			@RequestParam(value = Constants.REQUEST_PARAM_ORDERBY, required = false, defaultValue = "") String orderBy,
+			@RequestParam(value = Constants.REQUEST_PARAM_EXPORT_DOWNLOAD, required = false, defaultValue = "true") Boolean exportDownload,
 			@RequestParam(value = Constants.REQUEST_PARAM_EXPORT_INFO, required = true, defaultValue = "") String exportInfoString,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
@@ -577,11 +587,28 @@ public class AbstractDsReadController<M, F, P> extends
 			}
 
 			Template temp = cfg.getTemplate(_tplName);
-			Writer out = new OutputStreamWriter(response.getOutputStream(),
-					response.getCharacterEncoding());
-			temp.process(root, out);
-			out.flush();
-			return null;
+
+			if (exportDownload) {
+				Writer out = new OutputStreamWriter(response.getOutputStream(),
+						response.getCharacterEncoding());
+				temp.process(root, out);
+				out.flush();
+				return null;
+			} else {
+				String path = Session.user.get().getWorkspace().getTempPath();
+				String fileName = UUID.randomUUID().toString();
+				File outFile = new File(path + "/" + fileName + "."
+						+ dataFormat);
+
+				Writer out = new OutputStreamWriter(new FileOutputStream(
+						outFile), "UTF-8");
+				temp.process(root, out);
+				out.flush();
+
+				// just send the file name
+				return "{success:true, file:\"" + outFile.getName() + "\"}";
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.handleException(e, response);

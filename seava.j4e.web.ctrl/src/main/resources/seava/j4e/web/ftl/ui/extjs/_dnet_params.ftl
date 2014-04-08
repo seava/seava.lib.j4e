@@ -19,6 +19,7 @@
 		Main.urlUiExtjs = Main.urlWeb + "${statics["seava.j4e.api.Constants"].URL_UI_EXTJS}";
 		Main.urlSession = Main.urlWeb + "${statics["seava.j4e.api.Constants"].URL_SESSION}";
 		Main.urlUpload = Main.urlWeb + "${statics["seava.j4e.api.Constants"].URL_UPLOAD}";
+		Main.urlDownload = Main.urlWeb + "${statics["seava.j4e.api.Constants"].URL_DOWNLOAD}";
 	
 		/* ui-extjs paths */
 	

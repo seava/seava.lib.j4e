@@ -4,11 +4,8 @@
 		http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean id="multipartResolver" scope="singleton" lazy-init="true"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
-
-	<bean id="fileUploadController" scope="singleton" lazy-init="true"
-		class="seava.j4e.web.controller.upload.FileUploadController">
+	<bean id="fileDownloadController" scope="singleton" lazy-init="true"
+		class="seava.j4e.web.controller.download.FileDownloadController">
 	</bean>
 
 </beans>

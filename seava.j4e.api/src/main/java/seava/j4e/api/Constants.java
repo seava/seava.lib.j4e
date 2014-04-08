@@ -38,6 +38,7 @@ public class Constants {
 	public static final String REQUEST_PARAM_SIZE = "resultSize";
 	public static final String REQUEST_PARAM_ORDERBY = "orderBy";
 	public static final String REQUEST_PARAM_EXPORT_INFO = "export_info";
+	public static final String REQUEST_PARAM_EXPORT_DOWNLOAD = "download";
 
 	public static final String REQUEST_PARAM_SERVICE_NAME_PARAM = "rpcName";
 	public static final String REQUEST_PARAM_ASGN_OBJECT_ID = "objectId";
@@ -88,6 +89,8 @@ public class Constants {
 	public static final String SERVLETPATH_UI_EXTJS = "/ui-extjs";
 	public static final String SERVLETPATH_SECURITY = "/security";
 	public static final String SERVLETPATH_UPLOAD = "/upload";
+	public static final String SERVLETPATH_DOWNLOAD = "/download";
+	
 	public static final String SERVLETPATH_WORKFLOW = "/workflow";
 	public static final String SERVLETPATH_DATA = "/data";
 
@@ -103,6 +106,7 @@ public class Constants {
 	public static final String URL_SESSION = SERVLETPATH_SECURITY
 			+ CTXPATH_SESSION;
 	public static final String URL_UPLOAD = SERVLETPATH_UPLOAD;
+	public static final String URL_DOWNLOAD = SERVLETPATH_DOWNLOAD;
 	public static final String URL_WORKFLOW = SERVLETPATH_WORKFLOW;
 
 	public static final String URL_DATA_DS = SERVLETPATH_DATA + CTXPATH_DS;
