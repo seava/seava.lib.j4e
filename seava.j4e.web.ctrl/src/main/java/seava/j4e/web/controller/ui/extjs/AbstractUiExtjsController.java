@@ -74,8 +74,6 @@ public abstract class AbstractUiExtjsController extends AbstractBaseController {
 
 		String server = request.getServerName();
 		int port = request.getServerPort();
-		// String contextPath = request.getContextPath();
-		// String path = request.getServletPath();
 
 		String userRolesStr = null;
 
