@@ -78,4 +78,6 @@
 	
 	<bean id="defaultAsgnTxService" 
 	  	class="seava.j4e.business.service.asgn.DefaultAsgnTxService"/>
+	<bean id="serviceLocatorBusiness" 
+		class="seava.j4e.business.service.ServiceLocatorBusinessJee" />
 </beans>

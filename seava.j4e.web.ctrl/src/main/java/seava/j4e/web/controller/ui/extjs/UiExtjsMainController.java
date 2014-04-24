@@ -38,7 +38,6 @@ public class UiExtjsMainController extends AbstractUiExtjsController {
 			HttpServletResponse response) throws Exception {
 
 		try {
-			@SuppressWarnings("unused")
 			ISessionUser su = (ISessionUser) SecurityContextHolder.getContext()
 					.getAuthentication().getPrincipal();
 

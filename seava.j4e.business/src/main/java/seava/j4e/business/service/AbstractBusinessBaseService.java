@@ -16,6 +16,7 @@ import seava.j4e.api.ISettings;
 import seava.j4e.api.exceptions.BusinessException;
 import seava.j4e.api.exceptions.ErrorCode;
 import seava.j4e.api.model.IModelWithId;
+import seava.j4e.api.service.IServiceLocatorBusiness;
 import seava.j4e.api.service.business.IEntityService;
 import seava.j4e.api.wf.IActivitiProcessEngineHolder;
 import seava.j4e.business.AbstractApplicationContextAware;
@@ -45,7 +46,7 @@ public abstract class AbstractBusinessBaseService extends
 
 	private ISettings settings;
 
-	private ServiceLocatorBusiness serviceLocator;
+	private IServiceLocatorBusiness serviceLocator;
 
 	private ProcessEngine workflowEngine;
 
@@ -121,10 +122,10 @@ public abstract class AbstractBusinessBaseService extends
 	 * 
 	 * @return
 	 */
-	public ServiceLocatorBusiness getServiceLocator() {
+	public IServiceLocatorBusiness getServiceLocator() {
 		if (this.serviceLocator == null) {
 			this.serviceLocator = this.getApplicationContext().getBean(
-					ServiceLocatorBusiness.class);
+					IServiceLocatorBusiness.class);
 		}
 		return serviceLocator;
 	}
@@ -134,7 +135,7 @@ public abstract class AbstractBusinessBaseService extends
 	 * 
 	 * @param serviceLocator
 	 */
-	public void setServiceLocator(ServiceLocatorBusiness serviceLocator) {
+	public void setServiceLocator(IServiceLocatorBusiness serviceLocator) {
 		this.serviceLocator = serviceLocator;
 	}
 

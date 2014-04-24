@@ -8,7 +8,6 @@ package seava.j4e.presenter;
 import seava.j4e.api.ISettings;
 import seava.j4e.api.service.IServiceLocator;
 import seava.j4e.api.service.business.IEntityService;
-import seava.j4e.presenter.service.ServiceLocator;
 
 public abstract class AbstractPresenterBase extends
 		AbstractApplicationContextAware {
