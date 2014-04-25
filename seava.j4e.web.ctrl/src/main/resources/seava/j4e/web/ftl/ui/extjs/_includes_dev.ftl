@@ -91,6 +91,8 @@
 	<script type="text/javascript"
 		src="${urlUiExtjsCore}/js/e4e/dc/DcContext.js"></script>
 	<script type="text/javascript"
+		src="${urlUiExtjsCore}/js/e4e/dc/FlowContext.js"></script>	
+	<script type="text/javascript"
 		src="${urlUiExtjsCore}/js/e4e/dc/DcActionsStateManager.js"></script>
 	
 	<!-- dc-view -->
