@@ -6,6 +6,7 @@
 package seava.j4e.commons.security;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +26,13 @@ public class AppUserSettings implements IUserSettings, Serializable {
 	 * Date format masks to be used in java/extjs. The keys are the names in
 	 * {@link DateFormatAttribute}.
 	 */
-	private Map<String, String> dateFormats;
+	private Map<String, String> dateFormatMasks;
+
+	/**
+	 * Date formats to be used in java. The keys are the names in
+	 * {@link DateFormatAttribute}.
+	 */
+	private Map<String, SimpleDateFormat> dateFormats = new HashMap<String, SimpleDateFormat>();
 
 	/**
 	 * Pattern to highlight the separators: 0.000,00 or 0,000.00 etc
@@ -61,10 +68,10 @@ public class AppUserSettings implements IUserSettings, Serializable {
 
 		for (DateFormatAttribute a : DateFormatAttribute.values()) {
 			if (settings != null) {
-				usr.setDateFormat(a.name(),
+				usr.setDateFormatMask(a.name(),
 						settings.get(a.getPropertyFileKey()));
 			} else {
-				usr.setDateFormat(a.name(), a.getDefaultValue());
+				usr.setDateFormatMask(a.name(), a.getDefaultValue());
 			}
 		}
 
@@ -110,17 +117,29 @@ public class AppUserSettings implements IUserSettings, Serializable {
 		return thousandSeparator;
 	}
 
-	public String getDateFormat(String key) {
+	public SimpleDateFormat getDateFormat(DateFormatAttribute dfa) {
+		return this.getDateFormat(dfa.name());
+	}
+
+	public SimpleDateFormat getDateFormat(String key) {
+		if (!this.dateFormats.containsKey(key)) {
+			this.dateFormats.put(key,
+					new SimpleDateFormat(this.dateFormatMasks.get(key)));
+		}
 		return this.dateFormats.get(key);
 	}
 
-	public void setDateFormat(String key, String value)
+	public String getDateFormatMask(String key) {
+		return this.dateFormatMasks.get(key);
+	}
+
+	public void setDateFormatMask(String key, String value)
 			throws InvalidConfiguration {
-		if (this.dateFormats == null) {
-			this.dateFormats = new HashMap<String, String>();
+		if (this.dateFormatMasks == null) {
+			this.dateFormatMasks = new HashMap<String, String>();
 		}
 		this.validateDateFormatKey(key);
-		this.dateFormats.put(key, value);
+		this.dateFormatMasks.put(key, value);
 	}
 
 	private void validateDateFormatKey(String key) throws InvalidConfiguration {

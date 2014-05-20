@@ -36,6 +36,13 @@ public class DependencyLoader {
 
 	private String urlUiExtjsModules;
 	private String urlUiExtjsModuleSubpath;
+	private String host;
+
+	public DependencyLoader(String host) {
+		super();
+		this.host = host;
+	}
+
 	/**
 	 * Include component bundle in url?
 	 */
@@ -419,7 +426,13 @@ public class DependencyLoader {
 	}
 
 	public void setUrlUiExtjsModules(String urlUiExtjsModules) {
-		this.urlUiExtjsModules = urlUiExtjsModules;
+
+		if (urlUiExtjsModules.startsWith("http")) {
+			this.urlUiExtjsModules = urlUiExtjsModules;
+		} else {
+			this.urlUiExtjsModules = this.host + urlUiExtjsModules;
+		}
+
 	}
 
 	public String getUrlUiExtjsModuleSubpath() {

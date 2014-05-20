@@ -4,8 +4,19 @@ import seava.j4e.api.service.business.IAsgnTxService;
 import seava.j4e.api.service.business.IEntityService;
 import seava.j4e.api.service.presenter.IAsgnService;
 import seava.j4e.api.service.presenter.IDsService;
+import seava.j4e.api.service.presenter.IReportService;
 
 public interface IServiceLocator {
+
+	/**
+	 * Find a report service given its spring bean alias.
+	 * 
+	 * @param reportServiceAlias
+	 * @return
+	 * @throws Exception
+	 */
+	public IReportService findReportService(String reportServiceAlias)
+			throws Exception;
 
 	/**
 	 * Find a data-source service given the data-source name.
@@ -16,7 +27,7 @@ public interface IServiceLocator {
 	 * @return
 	 * @throws Exception
 	 */
-	public abstract <M, F, P> IDsService<M, F, P> findDsService(String dsName)
+	public <M, F, P> IDsService<M, F, P> findDsService(String dsName)
 			throws Exception;
 
 	/**
@@ -28,8 +39,8 @@ public interface IServiceLocator {
 	 * @return
 	 * @throws Exception
 	 */
-	public abstract <M, F, P> IDsService<M, F, P> findDsService(
-			Class<?> modelClass) throws Exception;
+	public <M, F, P> IDsService<M, F, P> findDsService(Class<?> modelClass)
+			throws Exception;
 
 	/**
 	 * Find an entity service given the entity class.
@@ -39,7 +50,7 @@ public interface IServiceLocator {
 	 * @return
 	 * @throws Exception
 	 */
-	public abstract <E> IEntityService<E> findEntityService(Class<E> entityClass)
+	public <E> IEntityService<E> findEntityService(Class<E> entityClass)
 			throws Exception;
 
 	/**
@@ -51,8 +62,8 @@ public interface IServiceLocator {
 	 * @return
 	 * @throws Exception
 	 */
-	public abstract <M, F, P> IAsgnService<M, F, P> findAsgnService(
-			String asgnName) throws Exception;
+	public <M, F, P> IAsgnService<M, F, P> findAsgnService(String asgnName)
+			throws Exception;
 
 	/**
 	 * Find an business assignment service given the service name and factory
@@ -64,7 +75,7 @@ public interface IServiceLocator {
 	 * @return
 	 * @throws Exception
 	 */
-	public abstract <E> IAsgnTxService<E> findAsgnTxService(String asgnName,
+	public <E> IAsgnTxService<E> findAsgnTxService(String asgnName,
 			String factoryName) throws Exception;
 
 	/**
@@ -76,7 +87,7 @@ public interface IServiceLocator {
 	 * @return
 	 * @throws Exception
 	 */
-	public abstract <E> IAsgnTxService<E> findAsgnTxService(String asgnName)
+	public <E> IAsgnTxService<E> findAsgnTxService(String asgnName)
 			throws Exception;
 
 }

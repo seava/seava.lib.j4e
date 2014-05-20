@@ -16,6 +16,7 @@ public class Constants {
 	public static final String DATA_FORMAT_XML = "xml";
 	public static final String DATA_FORMAT_HTML = "html";
 	public static final String DATA_FORMAT_PDF = "pdf";
+	public static final String DATA_FORMAT_XLS = "xls";
 
 	public static final String DATA_TYPE_STRING = "string";
 	public static final String DATA_TYPE_BOOLEAN = "boolean";
@@ -90,7 +91,7 @@ public class Constants {
 	public static final String SERVLETPATH_SECURITY = "/security";
 	public static final String SERVLETPATH_UPLOAD = "/upload";
 	public static final String SERVLETPATH_DOWNLOAD = "/download";
-	
+
 	public static final String SERVLETPATH_WORKFLOW = "/workflow";
 	public static final String SERVLETPATH_DATA = "/data";
 
@@ -125,6 +126,7 @@ public class Constants {
 
 	public static final String SPRING_OSGI_ENTITY_SERVICE_FACTORIES = "osgiEntityServiceFactories";
 	public static final String SPRING_OSGI_DS_SERVICE_FACTORIES = "osgiDsServiceFactories";
+	public static final String SPRING_OSGI_REPORT_SERVICE_FACTORIES = "osgiReportServiceFactories";
 	public static final String SPRING_OSGI_ASGN_SERVICE_FACTORIES = "osgiAsgnServiceFactories";
 	public static final String SPRING_OSGI_ASGN_TX_SERVICE_FACTORIES = "osgiAsgnTxServiceFactories";
 	public static final String SPRING_OSGI_DS_DEFINITIONS = "osgiDsDefinitions";

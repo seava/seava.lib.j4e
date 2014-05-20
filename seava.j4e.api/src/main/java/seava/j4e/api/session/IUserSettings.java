@@ -5,6 +5,10 @@
  */
 package seava.j4e.api.session;
 
+import java.text.SimpleDateFormat;
+
+import seava.j4e.api.enums.DateFormatAttribute;
+
 public interface IUserSettings {
 
 	public String getLanguage();
@@ -20,5 +24,9 @@ public interface IUserSettings {
 
 	public String getThousandSeparator();
 
-	public String getDateFormat(String key);
+	public String getDateFormatMask(String key);
+
+	public SimpleDateFormat getDateFormat(DateFormatAttribute dfa);
+
+	public SimpleDateFormat getDateFormat(String key);
 }

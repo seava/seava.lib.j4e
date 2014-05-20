@@ -23,6 +23,5 @@ public class SysParams_Core extends AbstractSysParams {
 					.getDescription(), p.getDataType(), this.getDefaultValue(p
 					.name()), p.getListOfValues()));
 		}
-
 	}
 }

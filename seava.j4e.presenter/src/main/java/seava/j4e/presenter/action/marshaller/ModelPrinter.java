@@ -50,9 +50,9 @@ public class ModelPrinter {
 
 	private SimpleDateFormat getDateFormat(String mask) {
 		if (!this.dateFormats.containsKey(mask)) {
-			String fmt = Session.user.get().getSettings()
+			SimpleDateFormat fmt = Session.user.get().getSettings()
 					.getDateFormat("JAVA_" + mask);
-			this.dateFormats.put(mask, new SimpleDateFormat(fmt));
+			this.dateFormats.put(mask, fmt);
 		}
 		return this.dateFormats.get(mask);
 	}

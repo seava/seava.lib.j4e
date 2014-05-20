@@ -217,19 +217,19 @@ public class SessionController extends AbstractBaseController {
 			String userRolesStr = null;
 
 			sb.append(",\"extjsDateFormat\":\""
-					+ prefs.getDateFormat(DateFormatAttribute.EXTJS_DATE_FORMAT
+					+ prefs.getDateFormatMask(DateFormatAttribute.EXTJS_DATE_FORMAT
 							.name()) + "\"");
 			sb.append(" , \"extjsTimeFormat\": \""
-					+ prefs.getDateFormat(DateFormatAttribute.EXTJS_TIME_FORMAT
+					+ prefs.getDateFormatMask(DateFormatAttribute.EXTJS_TIME_FORMAT
 							.name()) + "\"");
 			sb.append(" , \"extjsDateTimeFormat\": \""
-					+ prefs.getDateFormat(DateFormatAttribute.EXTJS_DATETIME_FORMAT
+					+ prefs.getDateFormatMask(DateFormatAttribute.EXTJS_DATETIME_FORMAT
 							.name()) + "\"");
 			sb.append(" , \"extjsMonthFormat\": \""
-					+ prefs.getDateFormat(DateFormatAttribute.EXTJS_MONTH_FORMAT
+					+ prefs.getDateFormatMask(DateFormatAttribute.EXTJS_MONTH_FORMAT
 							.name()) + "\"");
 			sb.append(" , \"extjsAltFormats\": \""
-					+ prefs.getDateFormat(DateFormatAttribute.EXTJS_ALT_FORMATS
+					+ prefs.getDateFormatMask(DateFormatAttribute.EXTJS_ALT_FORMATS
 							.name()) + "\"");
 
 			sb.append(" , \"decimalSeparator\": \""

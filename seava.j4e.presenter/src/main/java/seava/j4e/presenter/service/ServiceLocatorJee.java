@@ -10,6 +10,7 @@ import seava.j4e.api.service.business.IAsgnTxService;
 import seava.j4e.api.service.business.IEntityService;
 import seava.j4e.api.service.presenter.IAsgnService;
 import seava.j4e.api.service.presenter.IDsService;
+import seava.j4e.api.service.presenter.IReportService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,13 +37,11 @@ public class ServiceLocatorJee implements ApplicationContextAware,
 	}
 
 	/**
-	 * Find a data-source service given the data-source name and a list of
-	 * factories.
+	 * Find a data-source service given the data-source name
 	 * 
 	 * @param <M>
 	 * @param <P>
 	 * @param dsName
-	 * @param factories
 	 * @return
 	 * @throws Exception
 	 */
@@ -62,6 +61,33 @@ public class ServiceLocatorJee implements ApplicationContextAware,
 
 		if (srv == null) {
 			throw new Exception("Ds-service `" + dsName + "` not found !");
+		}
+		return srv;
+	}
+
+	/**
+	 * Find a report service given its spring bean alias factories.
+	 * 
+	 * @param reportServiceAlias
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	public IReportService findReportService(String reportServiceAlias)
+			throws Exception {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Looking for ds-service `" + reportServiceAlias + "`");
+		}
+		IReportService srv = (IReportService) this.applicationContext
+				.getBean(reportServiceAlias);
+		if (srv == null && this.applicationContext.getParent() != null) {
+			srv = (IReportService) this.applicationContext.getParent().getBean(
+					reportServiceAlias);
+		}
+
+		if (srv == null) {
+			throw new Exception("Report-service `" + reportServiceAlias
+					+ "` not found !");
 		}
 		return srv;
 	}

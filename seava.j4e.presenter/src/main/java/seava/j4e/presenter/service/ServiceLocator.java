@@ -17,6 +17,8 @@ import seava.j4e.api.service.presenter.IAsgnService;
 import seava.j4e.api.service.presenter.IAsgnServiceFactory;
 import seava.j4e.api.service.presenter.IDsService;
 import seava.j4e.api.service.presenter.IDsServiceFactory;
+import seava.j4e.api.service.presenter.IReportService;
+import seava.j4e.api.service.presenter.IReportServiceFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,8 +45,56 @@ public class ServiceLocator implements ApplicationContextAware, IServiceLocator 
 
 	private List<IAsgnTxServiceFactory> asgnTxServiceFactories;
 
-	/* (non-Javadoc)
-	 * @see seava.j4e.presenter.service.IServiceLocator#findDsService(java.lang.String)
+	private List<IReportServiceFactory> reportServiceFactories;
+
+	@Override
+	public IReportService findReportService(String reportServiceAlias)
+			throws Exception {
+		return this.findReportService(reportServiceAlias,
+				this.getReportServiceFactories());
+	}
+
+	/**
+	 * Find a data-source service given the data-source name and a list of
+	 * factories.
+	 * 
+	 * @param <M>
+	 * @param <P>
+	 * @param dsName
+	 * @param factories
+	 * @return
+	 * @throws Exception
+	 */
+	public IReportService findReportService(String reportServiceAlias,
+			List<IReportServiceFactory> factories) throws Exception {
+		if (logger.isDebugEnabled()) {
+			logger.debug("Looking for ds-service `" + reportServiceAlias + "`");
+		}
+		IReportService srv = null;
+		for (IReportServiceFactory f : factories) {
+			try {
+				srv = f.create(reportServiceAlias);
+				if (srv != null) {
+					if (logger.isDebugEnabled()) {
+						logger.debug("Ds-service `" + reportServiceAlias
+								+ "` found in factory " + f.toString());
+					}
+					return srv;
+				}
+			} catch (NoSuchBeanDefinitionException e) {
+				// service not found in this factory, ignore
+			}
+		}
+		throw new Exception("Ds-service `" + reportServiceAlias
+				+ "` not found !");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * seava.j4e.presenter.service.IServiceLocator#findDsService(java.lang.String
+	 * )
 	 */
 	@Override
 	public <M, F, P> IDsService<M, F, P> findDsService(String dsName)
@@ -52,8 +102,12 @@ public class ServiceLocator implements ApplicationContextAware, IServiceLocator 
 		return this.findDsService(dsName, this.getDsServiceFactories());
 	}
 
-	/* (non-Javadoc)
-	 * @see seava.j4e.presenter.service.IServiceLocator#findDsService(java.lang.Class)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * seava.j4e.presenter.service.IServiceLocator#findDsService(java.lang.Class
+	 * )
 	 */
 	@Override
 	public <M, F, P> IDsService<M, F, P> findDsService(Class<?> modelClass)
@@ -96,8 +150,12 @@ public class ServiceLocator implements ApplicationContextAware, IServiceLocator 
 		throw new Exception("Ds-service `" + dsName + "` not found !");
 	}
 
-	/* (non-Javadoc)
-	 * @see seava.j4e.presenter.service.IServiceLocator#findEntityService(java.lang.Class)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * seava.j4e.presenter.service.IServiceLocator#findEntityService(java.lang
+	 * .Class)
 	 */
 	@Override
 	public <E> IEntityService<E> findEntityService(Class<E> entityClass)
@@ -138,8 +196,12 @@ public class ServiceLocator implements ApplicationContextAware, IServiceLocator 
 		throw new Exception("Entity service `" + serviceAlias + "` not found");
 	}
 
-	/* (non-Javadoc)
-	 * @see seava.j4e.presenter.service.IServiceLocator#findAsgnService(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * seava.j4e.presenter.service.IServiceLocator#findAsgnService(java.lang
+	 * .String)
 	 */
 	@Override
 	public <M, F, P> IAsgnService<M, F, P> findAsgnService(String asgnName)
@@ -183,8 +245,12 @@ public class ServiceLocator implements ApplicationContextAware, IServiceLocator 
 		throw new Exception("Assignment service `" + asgnName + "` not found !");
 	}
 
-	/* (non-Javadoc)
-	 * @see seava.j4e.presenter.service.IServiceLocator#findAsgnTxService(java.lang.String, java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * seava.j4e.presenter.service.IServiceLocator#findAsgnTxService(java.lang
+	 * .String, java.lang.String)
 	 */
 	@Override
 	public <E> IAsgnTxService<E> findAsgnTxService(String asgnName,
@@ -193,8 +259,12 @@ public class ServiceLocator implements ApplicationContextAware, IServiceLocator 
 				this.getAsgnTxServiceFactories());
 	}
 
-	/* (non-Javadoc)
-	 * @see seava.j4e.presenter.service.IServiceLocator#findAsgnTxService(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * seava.j4e.presenter.service.IServiceLocator#findAsgnTxService(java.lang
+	 * .String)
 	 */
 	@Override
 	public <E> IAsgnTxService<E> findAsgnTxService(String asgnName)
@@ -378,6 +448,32 @@ public class ServiceLocator implements ApplicationContextAware, IServiceLocator 
 	public void setAsgnTxServiceFactories(
 			List<IAsgnTxServiceFactory> asgnTxServiceFactories) {
 		this.asgnTxServiceFactories = asgnTxServiceFactories;
+	}
+
+	/**
+	 * Get report service factories. If it is null attempts to retrieve it from
+	 * Spring context by <code>osgiReportServiceFactories</code> alias.
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<IReportServiceFactory> getReportServiceFactories() {
+		if (this.reportServiceFactories == null) {
+			this.reportServiceFactories = (List<IReportServiceFactory>) this
+					.getApplicationContext().getBean(
+							Constants.SPRING_OSGI_REPORT_SERVICE_FACTORIES);
+		}
+		return this.reportServiceFactories;
+	}
+
+	/**
+	 * Set report service factories.
+	 * 
+	 * @param dsServiceFactories
+	 */
+	public void setReportServiceFactories(
+			List<IReportServiceFactory> reportServiceFactories) {
+		this.reportServiceFactories = reportServiceFactories;
 	}
 
 }

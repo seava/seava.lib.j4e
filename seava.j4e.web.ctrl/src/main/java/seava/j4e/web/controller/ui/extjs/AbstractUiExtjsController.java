@@ -99,7 +99,7 @@ public abstract class AbstractUiExtjsController extends AbstractBaseController {
 				DateFormatAttribute mask = masks[i];
 				if (mask.isForJs()) {
 					dateFormatMasks.put(mask.name().replace("EXTJS_", ""),
-							prefs.getDateFormat(mask.name()));
+							prefs.getDateFormatMask(mask.name()));
 				}
 			}
 

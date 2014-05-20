@@ -93,7 +93,7 @@ public class UiExtjsFrameController extends AbstractUiExtjsController {
 				List<String> listCmp = new ArrayList<String>();
 				List<String> listTrl = new ArrayList<String>();
 
-				DependencyLoader loader = this.getDependencyLoader();
+				DependencyLoader loader = this.getDependencyLoader(request);
 				loader.resolveFrameDependencies(bundle, frameFQN,
 						(String) model.get("shortLanguage"), listCmp, listTrl);
 
@@ -170,7 +170,7 @@ public class UiExtjsFrameController extends AbstractUiExtjsController {
 		File f = new File(this.cacheFolder + "/" + bundle + "." + fileName);
 
 		if (!f.exists()) {
-			DependencyLoader loader = this.getDependencyLoader();
+			DependencyLoader loader = this.getDependencyLoader(request);
 			loader.packFrameCmp(bundle, frame, f);
 		}
 
@@ -212,7 +212,7 @@ public class UiExtjsFrameController extends AbstractUiExtjsController {
 		String fileName = frame + "-" + language + ".js";
 		File f = new File(this.cacheFolder + "/" + bundle + "." + fileName);
 		if (!f.exists()) {
-			DependencyLoader loader = this.getDependencyLoader();
+			DependencyLoader loader = this.getDependencyLoader(request);
 			loader.packFrameTrl(bundle, frame, language, f);
 		}
 
@@ -226,10 +226,14 @@ public class UiExtjsFrameController extends AbstractUiExtjsController {
 	 * 
 	 * @return
 	 */
-	private DependencyLoader getDependencyLoader() {
-		DependencyLoader loader = new DependencyLoader();
-		// loader.setUrlUiExtjsModulesI18n(getUiExtjsSettings()
-		// .getUrlModulesI18n());
+	private DependencyLoader getDependencyLoader(HttpServletRequest request) {
+
+		String host = request.getProtocol() + "://" + request.getServerName();
+		if (request.getServerPort() != 80) {
+			host += ":" + request.getServerPort();
+		}
+		host += "/";
+		DependencyLoader loader = new DependencyLoader(host);
 		loader.setUrlUiExtjsModules(getUiExtjsSettings().getUrlModules());
 		loader.setModuleUseBundle(getUiExtjsSettings().isModuleUseBundle());
 		loader.setUrlUiExtjsModuleSubpath(getUiExtjsSettings()
