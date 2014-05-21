@@ -227,8 +227,11 @@ public class UiExtjsFrameController extends AbstractUiExtjsController {
 	 * @return
 	 */
 	private DependencyLoader getDependencyLoader(HttpServletRequest request) {
-
-		String host = request.getProtocol() + "://" + request.getServerName();
+		String protocol = "http";
+		if (request.getProtocol().startsWith("HTTPS")) {
+			protocol = "https";
+		}
+		String host = protocol + "://" + request.getServerName();
 		if (request.getServerPort() != 80) {
 			host += ":" + request.getServerPort();
 		}
