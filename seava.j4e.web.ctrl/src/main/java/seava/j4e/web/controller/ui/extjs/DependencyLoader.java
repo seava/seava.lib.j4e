@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 public class DependencyLoader {
 
 	final static Logger logger = LoggerFactory
-			.getLogger(AbstractUiExtjsController.class);
+			.getLogger(DependencyLoader.class);
 
 	private ObjectMapper jsonMapper = new ObjectMapper();
 	private HttpClient httpClient = new DefaultHttpClient();
@@ -218,11 +218,15 @@ public class DependencyLoader {
 	 */
 	private List<String> resolveCmpDependencies(String cmp) throws Exception {
 		String url = this.urlDpd(cmp);
+
 		HttpGet get = new HttpGet(url);
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 
 		List<String> result = null;
 		try {
+			if (logger.isDebugEnabled()) {
+				logger.debug("Calling http request: " + url);
+			}
 
 			String responseBody = getHttpClient().execute(get, responseHandler);
 
@@ -426,13 +430,11 @@ public class DependencyLoader {
 	}
 
 	public void setUrlUiExtjsModules(String urlUiExtjsModules) {
-
 		if (urlUiExtjsModules.startsWith("http")) {
 			this.urlUiExtjsModules = urlUiExtjsModules;
 		} else {
 			this.urlUiExtjsModules = this.host + urlUiExtjsModules;
 		}
-
 	}
 
 	public String getUrlUiExtjsModuleSubpath() {

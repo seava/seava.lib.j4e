@@ -87,8 +87,8 @@ public class UiExtjsFrameController extends AbstractUiExtjsController {
 				model.put("logo", logo);
 			}
 
-			if (Constants.PROP_WORKING_MODE_DEV.equalsIgnoreCase(this
-					.getSettings().get(Constants.PROP_WORKING_MODE))) {
+			if (Constants.PROP_WORKING_MODE_DEV.matches(this.getSettings().get(
+					Constants.PROP_WORKING_MODE))) {
 
 				List<String> listCmp = new ArrayList<String>();
 				List<String> listTrl = new ArrayList<String>();
@@ -233,6 +233,10 @@ public class UiExtjsFrameController extends AbstractUiExtjsController {
 			host += ":" + request.getServerPort();
 		}
 		host += "/";
+		if (logger.isDebugEnabled()) {
+			logger.debug("Get dependency loader for host: " + host
+					+ ", modules url: " + getUiExtjsSettings().getUrlModules());
+		}
 		DependencyLoader loader = new DependencyLoader(host);
 		loader.setUrlUiExtjsModules(getUiExtjsSettings().getUrlModules());
 		loader.setModuleUseBundle(getUiExtjsSettings().isModuleUseBundle());

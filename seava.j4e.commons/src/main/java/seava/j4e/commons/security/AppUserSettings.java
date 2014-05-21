@@ -26,7 +26,7 @@ public class AppUserSettings implements IUserSettings, Serializable {
 	 * Date format masks to be used in java/extjs. The keys are the names in
 	 * {@link DateFormatAttribute}.
 	 */
-	private Map<String, String> dateFormatMasks;
+	private Map<String, String> dateFormatMasks = new HashMap<String, String>();
 
 	/**
 	 * Date formats to be used in java. The keys are the names in
