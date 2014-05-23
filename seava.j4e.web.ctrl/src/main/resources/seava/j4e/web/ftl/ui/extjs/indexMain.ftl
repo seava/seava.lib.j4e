@@ -2,15 +2,15 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>${productName} | ${productVersion}</title>
+	<link rel="shortcut icon" href="${ctxpath}/resources/images/favicon.ico">
+
 	<script type="text/javascript">
 		${constantsJsFragment}
 	</script>
 
-	
 	<!-- Theme /-->	
 	<link rel="stylesheet" type="text/css"
 		href="${urlUiExtjsThemes}/${theme}/${theme}-all.css" />
-
 </head>
 <body>
 
