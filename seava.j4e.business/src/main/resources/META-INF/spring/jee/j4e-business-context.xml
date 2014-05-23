@@ -23,44 +23,12 @@
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="jpaDialect" ref="jpaDialect"></property>
-		<property name="persistenceUnitName" value="${eclipselink.persistenceUnitName}" />
+		<property name="persistenceXmlLocation" value="classpath:persistence.xml" />
 		<property name="jpaVendorAdapter">
 			<bean
 				class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter">
 				<property name="showSql" value="true" />
 			</bean>
-		</property>
-		<property name="persistenceUnitPostProcessors">
-			<list>
-				<bean
-					class="seava.j4e.business.spring.DnetPersistenceUnitPostProcessor">
-					<constructor-arg value="${eclipselink.persistenceUnitName}" />					 
-					<constructor-arg>
-						<props>		
-							<prop key="eclipselink.target-database">${eclipselink.target-database}</prop>
-							
-							<prop key="eclipselink.ddl-generation">${eclipselink.ddl-generation}</prop>
-							<prop key="eclipselink.ddl-generation.output-mode">${eclipselink.ddl-generation.output-mode}</prop>							
-							<prop key="eclipselink.application-location">${eclipselink.application-location}</prop>
-							<prop key="eclipselink.create-ddl-jdbc-file-name">${eclipselink.create-ddl-jdbc-file-name}</prop>
-							<prop key="eclipselink.drop-ddl-jdbc-file-name">${eclipselink.drop-ddl-jdbc-file-name}</prop>
-							
-							<prop key="eclipselink.logging.logger">${eclipselink.logging.logger}</prop>
-							<prop key="eclipselink.logging.level">${eclipselink.logging.level}</prop>
-							<prop key="eclipselink.logging.level.sql">${eclipselink.logging.level.sql}</prop>
-							<prop key="eclipselink.logging.timestamp">${eclipselink.logging.timestamp}</prop>
-							<prop key="eclipselink.logging.session">${eclipselink.logging.session}</prop>
-							<prop key="eclipselink.logging.thread">${eclipselink.logging.thread}</prop>
-							<prop key="eclipselink.logging.exceptions">${eclipselink.logging.exceptions}</prop>
-							
-							<prop key="eclipselink.cache.type.default">${eclipselink.cache.type.default}</prop>
-							<prop key="eclipselink.cache.size.default">${eclipselink.cache.size.default}</prop>
-							<prop key="eclipselink.cache.shared.default">${eclipselink.cache.shared.default}</prop>
-							<prop key="eclipselink.flush-clear.cache">${eclipselink.flush-clear.cache}</prop>
-						</props>
-					</constructor-arg>
-				</bean>
-			</list>
 		</property>
 	</bean>
 
