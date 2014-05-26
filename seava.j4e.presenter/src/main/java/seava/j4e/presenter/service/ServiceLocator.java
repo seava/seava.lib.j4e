@@ -103,16 +103,17 @@ public class ServiceLocator implements ApplicationContextAware, IServiceLocator 
 	}
 
 	/*
-	 * (non-Javadoc)
 	 * 
 	 * @see
+	 * 
 	 * seava.j4e.presenter.service.IServiceLocator#findDsService(java.lang.Class
 	 * )
 	 */
 	@Override
 	public <M, F, P> IDsService<M, F, P> findDsService(Class<?> modelClass)
 			throws Exception {
-		return this.findDsService(modelClass.getSimpleName(),
+		return this.findDsService(
+				(String) modelClass.getField("ALIAS").get(null),
 				this.getDsServiceFactories());
 	}
 

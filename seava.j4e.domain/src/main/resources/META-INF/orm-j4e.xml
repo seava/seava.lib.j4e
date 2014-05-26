@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings
+	xsi:schemaLocation="http://www.eclipse.org/eclipselink/xsds/persistence/orm xsd/eclipselink_orm_1_0.xsd"
+	xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	version="1.0">
+
+	<entity class="seava.j4e.domain.impl.TempAsgn" />
+	<entity class="seava.j4e.domain.impl.TempAsgnLine" />
+
+
+</entity-mappings>

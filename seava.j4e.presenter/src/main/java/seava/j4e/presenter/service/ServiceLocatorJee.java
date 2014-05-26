@@ -33,7 +33,9 @@ public class ServiceLocatorJee implements ApplicationContextAware,
 	@Override
 	public <M, F, P> IDsService<M, F, P> findDsService(Class<?> modelClass)
 			throws Exception {
-		return this.findDsService(modelClass.getSimpleName());
+		// return this.findDsService(modelClass.getSimpleName());
+		return this.findDsService((String) modelClass.getField("ALIAS").get(
+				null));
 	}
 
 	/**

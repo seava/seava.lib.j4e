@@ -58,7 +58,7 @@ public abstract class AbstractPresenterBaseService extends
 	 */
 	public <M, F, P> IDsService<M, F, P> findDsService(Class<M> dsModelClass)
 			throws Exception {
-		return this.findDsService(dsModelClass.getSimpleName());
+		return this.findDsService((String)dsModelClass.getField("ALIAS").get(null));
 	}
 
 	/**
